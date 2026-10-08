@@ -146,7 +146,7 @@ const SCENES = {
     countUp(root)
   },
   tech() {
-    PT() ? camTo([0, 8.4, 1.0], [0, 0.55, -0.2], 2) : camTo([0, 7.6, 1.6], [0, 0.55, -0.75], 2)
+    PT() ? camTo([0, 8.4, 2.3], [0, 0.55, 1.1], 2) : camTo([0, 7.6, 1.6], [0, 0.55, -0.75], 2)
     pot({ x: 0, y: 0, z: 0, s: 1.25, ry: 0, rx: 0, lift: 0.4, tilt: 0, away: 1, boil: 0.9, steam: 0.25 }, 1.8)
     W.setCards('hidden', { dur: 0.8, stagger: 0.02 })
     W.setReels('hidden', { dur: 0.6 })

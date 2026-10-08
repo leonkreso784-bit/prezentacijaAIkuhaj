@@ -45,7 +45,7 @@ Videi uzimaju 77 s (demo 40 s + crtić 37 s), za govor ostaje oko 100 s.
 | 5 | Kako radi | 12 | Tri koraka: slikaš frižider, dobiješ tjedan, košarica je gotova. Evo uživo. |
 | 6 | demo (40 s) | 40 | Pričaj preko snimke (bez zvuka): Par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan s meal prepom. Ne paše mi jelo? Protresem. I košarica u Konzumu, naručeno. |
 | 7 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
-| 8 | Ispod poklopca | 15 | Gemini prepoznaje namirnice s fotke, planer slaže tjedan u četiri paralelna AI poziva, košarica se puni iz pravog Konzumova kataloga. |
+| 8 | Ispod poklopca: Što smo skuhali | 15 | Iz jedne fotke zna što imaš i što ističe. Za oko minutu složi cijeli tjedan, prvo ono što bi se bacilo. Košarica iz 249 pravih Konzumovih proizvoda. I radi uživo, probajte. |
 | 9 | QR | 10 | Ne vjerujte nam na riječ. Skenirajte i probajte odmah. |
 | 10 | crtić (37 s) | 37 | Pušta se sam, sa zvukom. Kad završi, sam ide na zadnji slajd. |
 | 11 | → aplikacija | | Kamera uroni u lonac i otvori se aplikacija. |
