@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
-    "preview": "vite preview --open"
+    "preview": "vite preview --open",
+    "qa": "vite build && node tools/qa.mjs shots/qa"
   },
   "repository": {
     "type": "git",

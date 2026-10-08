@@ -30,6 +30,7 @@ async function boot() {
   }))
 
   document.querySelectorAll('img[data-src="logo"]').forEach((i) => { i.src = logoUrl })
+  const icon = document.createElement('link'); icon.rel = 'icon'; icon.href = logoUrl; document.head.appendChild(icon)
   document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = icons[+el.dataset.icon] })
   document.getElementById('qr').innerHTML = await QRCode.toString(APP_URL, {
     type: 'svg', margin: 0, errorCorrectionLevel: 'H', color: { dark: '#2B1D16', light: '#FFFFFF' },
@@ -53,6 +54,9 @@ const camTo = (pos, target, d = 1.8, ease = 'power3.inOut') => {
 // mobitel uspravno: tekst gore, 3D dolje (kamera gleda više pa je pod nisko na ekranu)
 const PT = () => W.portrait
 const PCAM = [[0, 5.6, 9.5], [0, 5.1, 0]]
+// uspravni mobitel: okomita 9:16 verzija videa (ako postoji); bira se odmah da se preuzme prava datoteka
+const pickVideo = (v) => { const src = PT() ? v.dataset.mob : v.dataset.desk; if (v.getAttribute('src') !== src) { v.src = src; v.load() } }
+document.querySelectorAll('video').forEach(pickVideo)
 const fmt = (n, dec) => n.toFixed(dec).replace('.', ',')
 function countUp(root) {
   root.querySelectorAll('[data-count]').forEach((el) => {
@@ -116,7 +120,7 @@ const SCENES = {
   },
   how() {
     PT() ? camTo([0, 6.2, 9.5], [0, 5.7, 0]) : camTo([0, 1.6, 8], [0, 1, 0])
-    pot({ x: PT() ? 0 : -2.05, y: 0, z: 0, s: PT() ? 1.0 : 1.1, ry: 0.35, rx: 0, lift: 0.25, tilt: 0.6, away: 0, boil: 0.5, steam: 1 })
+    pot({ x: PT() ? 0 : -2.4, y: 0, z: 0, s: PT() ? 1.0 : 1.05, ry: 0.35, rx: 0, lift: 0.25, tilt: 0.6, away: 0, boil: 0.5, steam: 1 })
     W.setIngredients('ring', { dur: 1.6, stagger: 0.03, hop: 0.8, ease: 'power3.out' })
     W.setCards('hidden', { dur: 0.8 })
     W.setReels('hidden', { dur: 0.6 })
@@ -163,9 +167,7 @@ const SCENES = {
     W.setCards('hidden', { dur: 0.6 })
     W.setReels('hidden', { dur: 0.6 })
     const v = root.querySelector('video')
-    // uspravni mobitel: okomita 9:16 verzija (ako postoji) preko cijelog ekrana
-    const src = PT() ? v.dataset.mob : v.dataset.desk
-    if (v.getAttribute('src') !== src) { v.src = src; v.load() }
+    pickVideo(v)
     v.currentTime = 0
     v.muted = false
     v.onended = () => { if (slides[cur] === root) go(cur + 1) }
@@ -200,15 +202,18 @@ function go(n) {
   if (prev) {
     prev.querySelectorAll('video').forEach((v) => { v.pause(); v.onended = null })
     document.body.classList.remove('playing')
-    const els = prev.querySelectorAll('.a')
-    gsap.killTweensOf(els)
-    gsap.to(els, { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: () => prev.classList.remove('on') })
+    const els = [...prev.querySelectorAll('.a')]
+    const hidePrev = () => { if (slides[cur] !== prev) prev.classList.remove('on') }
+    if (els.length) {
+      gsap.killTweensOf(els)
+      gsap.to(els, { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: hidePrev })
+    } else gsap.delayedCall(0.35, hidePrev)
   }
   gsap.set('#flash', { opacity: 0 })
   next.classList.add('on')
-  const els = next.querySelectorAll('.a')
-  gsap.killTweensOf(els)
-  gsap.fromTo(els, { opacity: 0, y: 34, filter: 'blur(8px)' },
+  const els = [...next.querySelectorAll('.a')]
+  if (els.length) gsap.killTweensOf(els)
+  if (els.length) gsap.fromTo(els, { opacity: 0, y: 34, filter: 'blur(8px)' },
     { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, stagger: 0.09, delay: prev ? 0.35 : 0.6, ease: 'power3.out', clearProps: 'filter' })
   cur = n
   sceneTl = SCENES[next.dataset.scene]?.(next) || null

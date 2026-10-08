@@ -17,7 +17,7 @@ export function createWorld(canvas, { images, logo }) {
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  renderer.shadowMap.type = THREE.PCFShadowMap
 
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(C.bg)
@@ -444,11 +444,12 @@ export function createWorld(canvas, { images, logo }) {
   }
 
   // ---------- petlja ----------
-  const clock = new THREE.Clock()
+  let lastNow = performance.now()
   let t = 0, steamT = 0
   const tgt = new THREE.Vector3()
   function frame() {
-    const dt = Math.min(clock.getDelta(), 0.05)
+    const nowMs = performance.now(), dt = Math.min((nowMs - lastNow) / 1000, 0.05)
+    lastNow = nowMs
     t += dt
     steamT += dt * (0.6 + Math.min(potState.steam, 2) * 0.6)
     const s = potState.s

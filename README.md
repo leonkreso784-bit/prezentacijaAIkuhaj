@@ -68,6 +68,7 @@ Slajd „Tvoj tjedan“ (kartice jela u 3D) izbačen je jer demo pokazuje isto u
 - `src/main.js`: redoslijed slajdova, prijelazi, kontrole
 - `src/style.css`: tokeni iz aplikacije
 - `tools/shots.mjs`: snimke svih slajdova za provjeru (`node tools/shots.mjs shots 1920 1080`, nakon builda)
+- `npm run qa`: cijela provjera u Chromeu (prolaz naprijed/natrag, videi, brzo klikanje, odlazak na aplikaciju, 16:10, 4:3, mobitel)
 
 ## Demo aplikacije (snimka ekrana)
 
