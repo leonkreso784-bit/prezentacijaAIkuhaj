@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FFFBF6" />
+  <title>KuhAI pitch</title>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+
+  <main id="deck">
+    <!-- 0 · naslov -->
+    <section class="slide s-title" data-scene="title"
+      data-notes="Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru.">
+      <div class="col-left">
+        <div class="a brand-row"><img class="logo" data-src="logo" alt="" /><span class="pill">AI smišlja, ti kuhaš.</span></div>
+        <h1 class="a wordmark">Kuh<em>AI</em></h1>
+        <p class="a lead">Slikaj frižider. Dobij cijeli tjedan hrane.</p>
+        <p class="a sub">Meal prep i košarica u Konzumu, bez bacanja.</p>
+      </div>
+    </section>
+
+    <!-- 1 · problem: doomscroll + dostava -->
+    <section class="slide s-doom" data-scene="doom"
+      data-notes="Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura.">
+      <div class="col-left">
+        <p class="a kicker">Je li ovo tvoja večera?</p>
+        <h2 class="a h">20 min scrollaš recepte…</h2>
+        <h2 class="a h red">…pa naručiš za 20 €.</h2>
+        <div class="a chips">
+          <span class="chip"><b class="num">20 min</b> traženja</span>
+          <span class="chip hot"><b class="num">20+ €</b> po obroku</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · problem: bacanje -->
+    <section class="slide s-waste" data-scene="waste"
+      data-notes="A namirnice koje već imaš doma? Završe u smeću. U Hrvatskoj se baci 71 kilogram hrane po osobi godišnje, a tri četvrtine toga u kućanstvima.">
+      <div class="col-left">
+        <p class="a kicker">A ono što već imaš doma?</p>
+        <div class="a mega"><span class="num" data-count="71">71</span><small>kg</small></div>
+        <h2 class="a h">hrane po osobi godišnje završi u smeću.</h2>
+        <p class="a sub"><b class="num red">76 %</b> toga baci se u kućanstvima.</p>
+        <p class="a src">Izvor: Ministarstvo gospodarstva RH, istraživanje otpada od hrane (2021.)</p>
+      </div>
+    </section>
+
+    <!-- 3 · STOP. KUHAJ. -->
+    <section class="slide s-kuhaj" data-scene="kuhaj"
+      data-notes="Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI.">
+      <div class="center-top">
+        <p class="a stop">STOP.</p>
+        <h1 class="a kuhaj" aria-label="KuhAI"><span>K</span><span>U</span><span>H</span><span class="ja"><i class="j">AJ</i><i class="ai">AI</i></span></h1>
+      </div>
+    </section>
+
+    <!-- 4 · kako radi -->
+    <section class="slide s-how" data-scene="how"
+      data-notes="Kako radi? Odgovoriš na par brzih pitanja i slikaš frižider. AI prepozna namirnice i što uskoro ističe. Dobiješ cijeli tjedan: jelovnik, meal prep u dva bloka i košaricu u Konzumu sa samo onim što fali.">
+      <div class="col-right">
+        <p class="a kicker">Kako radi</p>
+        <h2 class="a h">Tri koraka do cijelog tjedna.</h2>
+        <ol class="a steps card">
+          <li><span class="ico t1" data-icon="0"></span><span><b>Slikaj frižider</b><small>Prepoznamo što imaš i što uskoro ističe.</small></span></li>
+          <li><span class="ico t2" data-icon="1"></span><span><b>Tjedan složen</b><small>Jelovnik i meal prep u dva bloka.</small></span></li>
+          <li><span class="ico t3" data-icon="2"></span><span><b>Košarica gotova</b><small>Samo ono što fali, u Konzumu.</small></span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5 · tjedan -->
+    <section class="slide s-week" data-scene="week"
+      data-notes="Ovo je tvoj tjedan. Svaki obrok ima razlog: špinat ti ističe sutra, pa ide prvi. Ne jede ti se nešto? Protreseš mobitel i dobiješ novo jelo od istih namirnica.">
+      <div class="center-top">
+        <p class="a kicker">Tvoj tjedan</p>
+        <h2 class="a h">Složen za tebe. Od onoga što imaš.</h2>
+      </div>
+      <div class="bottom-pill a"><svg class="shake" viewBox="0 0 32 32" aria-hidden="true"><rect x="10" y="4" width="12" height="24" rx="3" fill="#2B1D16"/><rect x="12" y="7" width="8" height="16" rx="1.5" fill="#FFF4E6"/><path d="M6 11c-2 2-2 8 0 10M26 11c2 2 2 8 0 10" stroke="#D0161B" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg> Ne jede ti se? <b>Protresi mobitel</b> i dobiješ novo jelo od istih namirnica.</div>
+    </section>
+
+    <!-- 6 · brojke -->
+    <section class="slide s-nums" data-scene="nums"
+      data-notes="Brojke na primjeru jednog tjedna iz aplikacije: cijela košarica 58 eura, to je 250 eura manje nego da sve naručiš. I 11 eura hrane spašeno od bacanja.">
+      <div class="col-left">
+        <p class="a kicker">Jedan tjedan s KuhAI</p>
+        <h2 class="a h">Manje novca. Manje bacanja.</h2>
+        <div class="nums">
+          <div class="a card stat"><small>Cijela košarica</small><b class="num" data-count="58.40">58,40 €</b><span>za tjedan, Konzum</span></div>
+          <div class="a card stat"><small>Jeftinije od dostave</small><b class="num red" data-count="251.60">251,60 €</b><span>isti obroci naručeni</span></div>
+          <div class="a card stat"><small>Spašeno od bacanja</small><b class="num green" data-count="11.20">11,20 €</b><span>špinat, jogurt, pola kupusa</span></div>
+        </div>
+        <p class="a src">Primjer tjedna iz aplikacije, cijene iz Konzumova kataloga.</p>
+      </div>
+    </section>
+
+    <!-- 7 · tehnologija -->
+    <section class="slide s-tech" data-scene="tech"
+      data-notes="Ispod poklopca: Gemini prepoznaje namirnice s fotke, planer slaže tjedan u četiri paralelna AI poziva, a košarica se puni iz pravog Konzumovog kataloga, s pravim pakiranjima.">
+      <div class="center-top">
+        <p class="a kicker">Ispod poklopca</p>
+        <h2 class="a h">Što se kuha unutra</h2>
+      </div>
+      <div class="corners">
+        <div class="a card tag tl"><b>Gemini vision</b><small>prepozna namirnice s fotke frižidera</small></div>
+        <div class="a card tag tr"><b><span class="num">4</span> paralelna AI poziva</b><small>cijeli tjedan za oko minutu</small></div>
+        <div class="a card tag bl"><b><span class="num">249</span> Konzum proizvoda</b><small><span class="num">53</span> na akciji, prave cijene</small></div>
+        <div class="a card tag br"><b>Prava pakiranja</b><small>1 kg riže, ne 10 l ulja</small></div>
+      </div>
+    </section>
+
+    <!-- 8 · QR -->
+    <section class="slide s-qr" data-scene="qr"
+      data-notes="Ne vjerujte nam na riječ. Skenirajte QR kod i probajte odmah, dok mi otvaramo aplikaciju.">
+      <div class="col-right qr-col">
+        <p class="a kicker">Probaj odmah</p>
+        <h2 class="a h">Skeniraj i skuhaj.</h2>
+        <div class="a card qr-card"><div id="qr"></div></div>
+        <p class="a url" id="qrUrl"></p>
+      </div>
+    </section>
+
+    <!-- 9 · odlazak na aplikaciju -->
+    <section class="slide s-go" data-scene="go" data-notes="Otvaram aplikaciju.">
+      <div class="go-msg"><img class="logo" data-src="logo" alt="" /><p>Otvaram Kuh<em>AI</em>…</p></div>
+    </section>
+  </main>
+
+  <div id="flash"></div>
+  <footer id="hud">
+    <div class="dots" id="dots"></div>
+    <div id="timer" hidden>3:00</div>
+  </footer>
+  <aside id="notes" hidden></aside>
+  <div id="hint">→ / razmaknica: dalje · F: cijeli zaslon · T: štoperica · N: bilješke</div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
