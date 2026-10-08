@@ -26,6 +26,8 @@ export function createWorld(canvas, { images, logo }) {
   scene.environmentIntensity = 0.55
 
   const BASE_FOV = 35
+  const PORTRAIT_MAX = 0.85
+  let portrait = false
   const camera = new THREE.PerspectiveCamera(BASE_FOV, 16 / 9, 0.1, 100)
   const cam = { pos: new THREE.Vector3(0, 1.5, 8), target: new THREE.Vector3(0, 1, 0) }
 
@@ -33,7 +35,7 @@ export function createWorld(canvas, { images, logo }) {
   const sun = new THREE.DirectionalLight('#fff6ec', 2.4)
   sun.position.set(4, 9, 6)
   sun.castShadow = true
-  sun.shadow.mapSize.set(2048, 2048)
+  sun.shadow.mapSize.setScalar(matchMedia('(pointer: coarse)').matches ? 1024 : 2048)
   Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 30 })
   sun.shadow.radius = 6
   sun.shadow.bias = -0.0004
@@ -346,8 +348,8 @@ export function createWorld(canvas, { images, logo }) {
       o.scale = 1.05; o.gray = 0
     },
     fallen(it, t, o) {
-      const a = it.rnd[0] * TAU, r = Math.sqrt(it.rnd[1]) * 1.6
-      o.pos.set(2.4 + Math.cos(a) * r * 1.3, 0.13, 0.4 + Math.sin(a) * r * 0.75)
+      const a = it.rnd[0] * TAU, r = Math.sqrt(it.rnd[1]) * (portrait ? 1.25 : 1.6)
+      o.pos.set((portrait ? 0 : 2.4) + Math.cos(a) * r * 1.3, 0.13, 0.4 + Math.sin(a) * r * 0.75)
       o.euler.set(Math.PI / 2 * (it.i % 2), it.rnd[2] * TAU, Math.PI / 2 * ((it.i >> 1) % 2) * 0.9)
       o.scale = 1.05; o.gray = 0.8
     },
@@ -369,6 +371,13 @@ export function createWorld(canvas, { images, logo }) {
   const CARD = {
     hidden(it, t, o) { o.pos.set((it.i - 3) * 0.6, 1.0, -3); o.euler.set(0, 0, 0); o.scale = 0.0001 },
     week(it, t, o) {
+      if (portrait) { // mobitel: mreža 3 + 3 + 1
+        const col = it.i < 6 ? it.i % 3 : 1, row = Math.floor(it.i / 3)
+        o.pos.set((col - 1) * 1.62, 5.4 - row * 2.1 + Math.sin(t * 0.9 + it.i * 0.8) * 0.03, 0)
+        o.euler.set(-0.05, 0, 0)
+        o.scale = 1.5
+        return
+      }
       const d = it.i - 3
       o.pos.set(d * 1.13, 0.95 + Math.sin(t * 0.9 + it.i * 0.8) * 0.04, -Math.abs(d) * 0.32)
       o.euler.set(0, -d * 0.13, 0)
@@ -386,9 +395,9 @@ export function createWorld(canvas, { images, logo }) {
     feed(it, t, o) {
       const span = REELS.length * 2.0
       const y = ((it.i * 2.0 - t * 0.9) % span + span) % span - 3.6
-      o.pos.set(2.35 + (it.i % 2) * 0.12, 1.0 + y, 0)
-      o.euler.set(-0.08, -0.4, 0.03)
-      o.scale = 1
+      o.pos.set((portrait ? 0 : 2.35) + (it.i % 2) * 0.12, (portrait ? 2.4 : 1.0) + y, 0)
+      o.euler.set(-0.08, portrait ? -0.25 : -0.4, 0.03)
+      o.scale = portrait ? 1.3 : 1
     },
   }
 
@@ -477,9 +486,15 @@ export function createWorld(canvas, { images, logo }) {
     const w = innerWidth, h = innerHeight, a = w / h
     renderer.setSize(w, h, false)
     camera.aspect = a
-    // uži ekran od 16:9 → zadrži istu širinu kadra (poravnato s HTML slojem)
+    portrait = a < PORTRAIT_MAX
     const base = THREE.MathUtils.degToRad(BASE_FOV)
-    camera.fov = a < 16 / 9 ? THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(base / 2) * (16 / 9) / a)) : BASE_FOV
+    if (portrait) {
+      // mobitel uspravno: kadar širok ~5,2 jedinice na udaljenosti 8
+      camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(2.6 / 8 / a))
+    } else {
+      // uži ekran od 16:9 → zadrži istu širinu kadra (poravnato s HTML slojem)
+      camera.fov = a < 16 / 9 ? THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(base / 2) * (16 / 9) / a)) : BASE_FOV
+    }
     camera.updateProjectionMatrix()
   }
   addEventListener('resize', resize)
@@ -488,6 +503,7 @@ export function createWorld(canvas, { images, logo }) {
 
   return {
     cam, potState, ingredients, cards, reels,
+    get portrait() { return portrait },
     setIngredients: (name, o) => setLayout(ingredients, name, o),
     setCards: (name, o) => setLayout(cards, name, o),
     setReels: (name, o) => setLayout(reels, name, o),

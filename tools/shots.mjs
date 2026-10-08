@@ -3,10 +3,10 @@ import { chromium } from 'playwright'
 import { mkdirSync } from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
-const [out = 'shots', w = 1920, h = 1080] = process.argv.slice(2)
+const [out = 'shots', w = 1920, h = 1080, mobile] = process.argv.slice(2)
 mkdirSync(out, { recursive: true })
 const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] })
-const p = await b.newPage({ viewport: { width: +w, height: +h } })
+const p = await b.newPage({ viewport: { width: +w, height: +h }, ...(mobile ? { deviceScaleFactor: 2, isMobile: true, hasTouch: true } : {}) })
 p.on('pageerror', (e) => console.error('PAGE ERROR', e.message))
 p.on('console', (m) => m.type() === 'error' && console.error('CONSOLE', m.text()))
 await p.goto(pathToFileURL(path.resolve('dist/index.html')).href + '?noredirect&shot')

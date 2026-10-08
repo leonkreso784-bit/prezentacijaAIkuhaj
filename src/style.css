@@ -146,3 +146,53 @@ body.playing #hud { opacity: 0; }
 #hint { z-index: 4; position: fixed; left: 50%; top: calc(var(--u) * 2.4); transform: translateX(-50%); font-size: calc(var(--u) * 1.7); font-weight: 700; color: var(--muted); background: rgb(255 255 255 / .8); border: 1px solid var(--line); padding: calc(var(--u) * .6) calc(var(--u) * 1.8); border-radius: 999px; transition: opacity .6s; }
 #hint.gone { opacity: 0; }
 [hidden] { display: none !important; }
+
+/* ---------- mobitel uspravno: tekst gore, 3D scena dolje ---------- */
+body.portrait { --u: min(1.1vw, 0.52vh); }
+body.portrait #deck { width: 100vw; height: 100dvh; }
+/* krem preljev iza teksta da 3D objekti ne smetaju čitanju */
+body.portrait .slide::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 46%;
+  background: linear-gradient(var(--bg) 78%, rgb(255 251 246 / 0)); }
+body.portrait .s-week::before, body.portrait .s-tech::before { height: 22%; }
+body.portrait .s-nums::before, body.portrait .s-how::before { height: 70%; }
+body.portrait .s-kuhaj::before, body.portrait .s-video::before, body.portrait .s-go::before { display: none; }
+body.portrait .col-left, body.portrait .col-right {
+  left: calc(var(--u) * 7); right: calc(var(--u) * 7); top: calc(var(--u) * 14); width: auto; transform: none; }
+body.portrait .center-top { top: calc(var(--u) * 14); padding: 0 calc(var(--u) * 6); }
+body.portrait .h { font-size: calc(var(--u) * 7.4); }
+body.portrait .kicker { font-size: calc(var(--u) * 3.6); }
+body.portrait .sub { font-size: calc(var(--u) * 3.8); }
+body.portrait .src { font-size: calc(var(--u) * 2.6); margin-top: calc(var(--u) * 2.5); }
+body.portrait .wordmark { font-size: calc(var(--u) * 19); margin-top: calc(var(--u) * 3); }
+body.portrait .lead { font-size: calc(var(--u) * 6.4); }
+body.portrait .pill { font-size: calc(var(--u) * 3); }
+body.portrait .chip { font-size: calc(var(--u) * 3.4); }
+body.portrait .mega { font-size: calc(var(--u) * 26); }
+body.portrait .kuhaj { font-size: calc(var(--u) * 16); }
+body.portrait .stop { font-size: calc(var(--u) * 7); }
+body.portrait .steps li { padding: calc(var(--u) * 2.6); gap: calc(var(--u) * 3); }
+body.portrait .steps b { font-size: calc(var(--u) * 4); }
+body.portrait .steps small { font-size: calc(var(--u) * 3.1); }
+body.portrait .ico { width: calc(var(--u) * 11); height: calc(var(--u) * 11); }
+body.portrait .bottom-pill { white-space: normal; width: calc(100% - var(--u) * 12); text-align: left; border-radius: calc(var(--u) * 4);
+  font-size: calc(var(--u) * 3.4); bottom: calc(var(--u) * 7); }
+body.portrait .shake { flex: none; width: calc(var(--u) * 7); height: calc(var(--u) * 7); }
+body.portrait .nums { flex-direction: column; gap: calc(var(--u) * 2.4); }
+body.portrait .stat { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: calc(var(--u) * 2); padding: calc(var(--u) * 3); }
+body.portrait .stat small { font-size: calc(var(--u) * 3.2); }
+body.portrait .stat b { font-size: calc(var(--u) * 7); grid-row: span 2; grid-column: 2; margin: 0; }
+body.portrait .stat span { font-size: calc(var(--u) * 2.8); }
+body.portrait .tag { width: calc(50% - var(--u) * 9); padding: calc(var(--u) * 2.4); }
+body.portrait .tag b { font-size: calc(var(--u) * 3.6); }
+body.portrait .tag small { font-size: calc(var(--u) * 2.8); }
+body.portrait .tag.tl { left: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 44); }
+body.portrait .tag.tr { right: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 44); }
+body.portrait .tag.bl { left: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 12); }
+body.portrait .tag.br { right: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 12); }
+body.portrait .qr-col { width: auto; }
+body.portrait #qr { width: calc(var(--u) * 62); height: calc(var(--u) * 62); }
+body.portrait .video-wrap { inset: auto calc(var(--u) * 4); top: 50%; aspect-ratio: 16 / 9; translate: 0 -50%; }
+body.portrait .go-msg p { font-size: calc(var(--u) * 8); }
+body.portrait #hint { font-size: calc(var(--u) * 2.8); white-space: nowrap; }
+body.portrait .dots i { width: calc(var(--u) * 1.4); height: calc(var(--u) * 1.4); }
+body.portrait .dots i.on { width: calc(var(--u) * 4.5); }

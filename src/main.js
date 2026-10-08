@@ -50,6 +50,9 @@ const camTo = (pos, target, d = 1.8, ease = 'power3.inOut') => {
   gsap.to(W.cam.pos, { x: pos[0], y: pos[1], z: pos[2], duration: d, ease, overwrite: 'auto' })
   gsap.to(W.cam.target, { x: target[0], y: target[1], z: target[2], duration: d, ease, overwrite: 'auto' })
 }
+// mobitel uspravno: tekst gore, 3D dolje (kamera gleda više pa je pod nisko na ekranu)
+const PT = () => W.portrait
+const PCAM = [[0, 5.6, 9.5], [0, 5.1, 0]]
 const fmt = (n, dec) => n.toFixed(dec).replace('.', ',')
 function countUp(root) {
   root.querySelectorAll('[data-count]').forEach((el) => {
@@ -64,28 +67,28 @@ function countUp(root) {
 // enter(dir) vraća opcionalni timeline koji se ubija kad se slajd napusti
 const SCENES = {
   title() {
-    camTo([0, 1.5, 8], [0, 1, 0])
-    pot({ x: 2.3, y: 0, z: 0, s: 1.25, ry: -0.35, rx: 0, lift: 0, tilt: 0, away: 0, boil: 0.35, steam: 1 })
+    PT() ? camTo(...PCAM) : camTo([0, 1.5, 8], [0, 1, 0])
+    pot({ x: PT() ? 0 : 2.3, y: 0, z: 0, s: PT() ? 1.3 : 1.25, ry: PT() ? -0.15 : -0.35, rx: 0, lift: 0, tilt: 0, away: 0, boil: 0.35, steam: 1 })
     W.setIngredients('ring', { dur: 1.8, stagger: 0.04, hop: 0.4 })
     W.setCards('hidden', { dur: 0.8, stagger: 0.02 })
     W.setReels('hidden', { dur: 0.8 })
   },
   doom() {
-    camTo([0, 1.4, 8], [0, 1, 0])
+    PT() ? camTo(...PCAM) : camTo([0, 1.4, 8], [0, 1, 0])
     pot({ x: 4.5, y: 0, z: -4, s: 0.0001, ry: -0.8, lift: 0, tilt: 0, away: 0, boil: 0, steam: 0 }, 1.2)
     W.setIngredients('hidden', { dur: 1.1, stagger: 0.02, ease: 'power2.in' })
     W.setCards('hidden', { dur: 0.8 })
     W.setReels('feed', { dur: 1.6, stagger: 0.08, ease: 'power3.out' })
   },
   waste() {
-    camTo([0.4, 1.35, 7.4], [0.9, 0.7, 0])
+    PT() ? camTo([0, 4.6, 8.6], [0, 4.0, 0]) : camTo([0.4, 1.35, 7.4], [0.9, 0.7, 0])
     pot({ x: 4.5, y: 0, z: -4, s: 0.0001, steam: 0, boil: 0 }, 1)
     W.setReels('hidden', { dur: 0.9, stagger: 0.03, ease: 'power2.in' })
     W.setCards('hidden', { dur: 0.6 })
     W.setIngredients('fallen', { dur: 1.5, stagger: 0.05, delay: 0.3, ease: 'bounce.out' })
   },
   kuhaj(root) {
-    camTo([0, 2.3, 8.4], [0, 1.75, 0], 1.6)
+    PT() ? camTo(...PCAM, 1.6) : camTo([0, 2.3, 8.4], [0, 1.75, 0], 1.6)
     W.setReels('hidden', { dur: 0.6 })
     W.setCards('hidden', { dur: 0.6 })
     gsap.killTweensOf(P)
@@ -99,7 +102,7 @@ const SCENES = {
     const tl = gsap.timeline()
     tl.fromTo(stop, { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(3)' }, 0.25)
       .fromTo(letters, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'back.out(2.5)' }, 0.75)
-      .to(P, { s: 1.3, duration: 0.7, ease: 'back.out(1.7)' }, 0.8)
+      .to(P, { s: PT() ? 1.45 : 1.3, duration: 0.7, ease: 'back.out(1.7)' }, 0.8)
       .add(() => W.setIngredients('pot', { dur: 1.1, stagger: 0.035, hop: 1.4, ease: 'power2.in' }), 0.9)
       .call(() => k.classList.add('glitch'), null, 1.6)
       .to(j, { keyframes: { x: [0, -14, 10, -6, 12, 0], skewX: [0, 14, -10, 6, 0, 0] }, duration: 0.5, ease: 'none' }, 1.6)
@@ -112,14 +115,14 @@ const SCENES = {
     return tl
   },
   how() {
-    camTo([0, 1.6, 8], [0, 1, 0])
-    pot({ x: -2.05, y: 0, z: 0, s: 1.1, ry: 0.35, rx: 0, lift: 0.25, tilt: 0.6, away: 0, boil: 0.5, steam: 1 })
+    PT() ? camTo([0, 6.2, 9.5], [0, 5.7, 0]) : camTo([0, 1.6, 8], [0, 1, 0])
+    pot({ x: PT() ? 0 : -2.05, y: 0, z: 0, s: PT() ? 1.0 : 1.1, ry: 0.35, rx: 0, lift: 0.25, tilt: 0.6, away: 0, boil: 0.5, steam: 1 })
     W.setIngredients('ring', { dur: 1.6, stagger: 0.03, hop: 0.8, ease: 'power3.out' })
     W.setCards('hidden', { dur: 0.8 })
     W.setReels('hidden', { dur: 0.6 })
   },
   week(root) {
-    camTo([0, 1.15, 6.9], [0, 1.0, 0])
+    PT() ? camTo([0, 3.65, 9.5], [0, 3.35, 0]) : camTo([0, 1.15, 6.9], [0, 1.0, 0])
     pot({ x: 0, y: 0, z: -7, s: 0.0001, boil: 0, steam: 0 }, 1.2)
     W.setIngredients('hidden', { dur: 1.1, stagger: 0.02, ease: 'power2.in' })
     W.setReels('hidden', { dur: 0.6 })
@@ -131,30 +134,30 @@ const SCENES = {
     return tl
   },
   nums(root) {
-    camTo([0, 1.45, 8], [0, 1.0, 0])
+    PT() ? camTo(...PCAM) : camTo([0, 1.45, 8], [0, 1.0, 0])
     pot({ x: 0, y: 0, z: -7, s: 0.0001, steam: 0 }, 1)
     W.setIngredients('hidden', { dur: 1.1, stagger: 0.02, ease: 'power2.in' })
     W.setReels('hidden', { dur: 0.6 })
-    W.setCards('fan', { dur: 1.5, stagger: 0.05, ease: 'power3.inOut' })
+    W.setCards(PT() ? 'hidden' : 'fan', { dur: 1.5, stagger: 0.05, ease: 'power3.inOut' })
     countUp(root)
   },
   tech() {
-    camTo([0, 7.6, 1.6], [0, 0.55, -0.75], 2)
+    PT() ? camTo([0, 8.4, 1.0], [0, 0.55, -0.2], 2) : camTo([0, 7.6, 1.6], [0, 0.55, -0.75], 2)
     pot({ x: 0, y: 0, z: 0, s: 1.25, ry: 0, rx: 0, lift: 0.4, tilt: 0, away: 1, boil: 0.9, steam: 0.25 }, 1.8)
     W.setCards('hidden', { dur: 0.8, stagger: 0.02 })
     W.setReels('hidden', { dur: 0.6 })
     W.setIngredients('swirl', { dur: 1.8, stagger: 0.03, hop: 1.2, delay: 0.3 })
   },
   qr() {
-    camTo([0, 1.5, 8], [0, 1, 0])
-    pot({ x: -2.5, y: 0, z: 0, s: 1.25, ry: 0.35, rx: 0, lift: 0.3, tilt: 0.8, away: 0, boil: 0.6, steam: 1.1 }, 1.8)
+    PT() ? camTo([0, 6.6, 9.5], [0, 6.1, 0]) : camTo([0, 1.5, 8], [0, 1, 0])
+    pot({ x: PT() ? 0 : -2.5, y: 0, z: 0, s: PT() ? 1.0 : 1.25, ry: 0.35, rx: 0, lift: 0.3, tilt: 0.8, away: 0, boil: 0.6, steam: 1.1 }, 1.8)
     W.setIngredients('ring', { dur: 1.8, stagger: 0.03, hop: 0.9 })
     W.setCards('hidden', { dur: 0.6 })
     W.setReels('hidden', { dur: 0.6 })
   },
   video(root) {
     // lonac se zakuha, a crtić izroni ispred njega
-    camTo([0, 1.5, 8], [0, 1, 0], 1.4)
+    PT() ? camTo(...PCAM, 1.4) : camTo([0, 1.5, 8], [0, 1, 0], 1.4)
     pot({ x: 0, y: 0, z: 0, s: 1.3, ry: 0, rx: 0, lift: 0.5, tilt: 0.8, away: 0, boil: 1, steam: 1.6 }, 1.2)
     W.setIngredients('ring', { dur: 1.4, stagger: 0.02, hop: 0.6 })
     W.setCards('hidden', { dur: 0.6 })
@@ -243,7 +246,26 @@ addEventListener('keydown', (e) => {
   else return
   hint.classList.add('gone')
 })
-addEventListener('click', () => go(cur + 1))
+// promjena orijentacije: ponovno složi trenutni slajd
+let wasPortrait = PT()
+document.body.classList.toggle('portrait', wasPortrait)
+addEventListener('resize', () => {
+  if (PT() === wasPortrait) return
+  wasPortrait = PT()
+  document.body.classList.toggle('portrait', wasPortrait)
+  const n = cur; cur = -1; slides.forEach((s) => s.classList.remove('on')); go(n)
+})
+// dodir: tap = dalje, povlačenje desno = natrag, lijevo = dalje
+let touch = null, swiped = false
+addEventListener('touchstart', (e) => { touch = e.touches[0]; swiped = false }, { passive: true })
+addEventListener('touchend', (e) => {
+  if (!touch) return
+  const dx = e.changedTouches[0].clientX - touch.clientX, dy = e.changedTouches[0].clientY - touch.clientY
+  touch = null
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { swiped = true; go(cur + (dx < 0 ? 1 : -1)) }
+})
+if (matchMedia('(pointer: coarse)').matches) hint.textContent = 'Dodirni za dalje · povuci udesno za natrag'
+addEventListener('click', () => { if (swiped) { swiped = false; return } go(cur + 1) })
 addEventListener('contextmenu', (e) => { e.preventDefault(); go(cur - 1) })
 
 window.__go = go
