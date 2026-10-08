@@ -189,22 +189,42 @@ const SCENES = {
     return playVideo(root, false)
   },
   go(root) {
+    // lonac izroni, poklopac odleti, sastojci upadnu, a kamera u jednom luku uroni u juhu → krem bljesak → otvara se aplikacija
     const msg = root.querySelector('.go-msg'), flash = document.getElementById('flash')
+    const logo = msg.querySelector('.logo'), txt = msg.querySelector('p')
     gsap.set(msg, { opacity: 0 })
+    gsap.killTweensOf([P, W.cam.pos, W.cam.target])
+    gsap.set(P, { x: 0, y: -3.2, z: 0, s: 1.3, ry: 0.9, rx: 0, lift: 0, tilt: 0, away: 0, boil: 1, steam: 0.5 })
+    W.setIngredients('ring', { dur: 0.5, stagger: 0.01, hop: 0.5 })
+    // luk kamere: kvadratna Bézierova krivulja od trenutnog položaja, preko vrha, ravno u juhu
+    const c0 = { ...W.cam.pos }, t0 = { ...W.cam.target }
+    const c1 = { x: 0, y: 7, z: 3.2 }, c2 = { x: 0, y: 1.5, z: 0.06 }, t2 = { x: 0, y: 0.9, z: 0 }
+    const arc = { u: 0 }
+    const bez = (k, a, b, c) => (1 - k) * (1 - k) * a + 2 * (1 - k) * k * b + k * k * c
     const tl = gsap.timeline()
-    tl.to(P, { x: 0, z: 0, s: 1.3, ry: 0, lift: 1.6, tilt: 0, away: 1, steam: 2, boil: 1, duration: 0.8, ease: 'power3.inOut' }, 0)
-      .to(W.cam.pos, { x: 0, y: 6.5, z: 0.6, duration: 0.9, ease: 'power3.inOut' }, 0)
-      .to(W.cam.target, { x: 0, y: 0.8, z: 0, duration: 0.9, ease: 'power3.inOut' }, 0)
-      .to(W.cam.pos, { y: 1.3, z: 0.05, duration: 0.8, ease: 'power3.in' }, 0.9)
-      .to(flash, { opacity: 1, duration: 0.35, ease: 'power1.in' }, 1.45)
-      .fromTo(msg, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, 1.7)
-      .call(() => { if (!NO_REDIRECT) location.href = APP_URL }, null, 2.3)
+    tl.to(P, { y: 0, duration: 0.6, ease: 'back.out(1.5)' }, 0.15)
+      .to(P, { ry: 0, duration: 0.75, ease: 'power3.out' }, 0.15)
+      .to(P, { lift: 1.4, tilt: 0.7, duration: 0.3, ease: 'power2.out' }, 0.4)
+      .to(P, { away: 1, duration: 0.55, ease: 'power2.in' }, 0.6)
+      .add(() => W.setIngredients('pot', { dur: 0.55, stagger: 0.01, hop: 0.9, ease: 'power2.in' }), 0.5)
+      .to(arc, { u: 1, duration: 1.45, ease: 'power2.inOut', onUpdate() {
+        const k = arc.u
+        W.cam.pos.x = bez(k, c0.x, c1.x, c2.x); W.cam.pos.y = bez(k, c0.y, c1.y, c2.y); W.cam.pos.z = bez(k, c0.z, c1.z, c2.z)
+        W.cam.target.x = t0.x + (t2.x - t0.x) * k; W.cam.target.y = t0.y + (t2.y - t0.y) * k; W.cam.target.z = t0.z + (t2.z - t0.z) * k
+      } }, 0.45)
+      .to(flash, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 1.65)
+      .set(msg, { opacity: 1 }, 1.95)
+      .fromTo(logo, { scale: 0.3, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: 'back.out(2.2)' }, 1.95)
+      .fromTo(txt, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, 2.08)
+      .call(() => { if (!NO_REDIRECT) location.href = APP_URL }, null, 2.75)
     return tl
   },
 }
 
 // ---------- prijelazi ----------
 let cur = -1, sceneTl = null
+// blur preko videa cijelog slajda je preskup (zapinje), pa video samo pretapamo
+const isVid = (el) => el.classList.contains('video-wrap')
 function go(n) {
   n = Math.max(0, Math.min(slides.length - 1, n))
   if (n === cur) return
@@ -217,7 +237,7 @@ function go(n) {
     const hidePrev = () => { if (slides[cur] !== prev) prev.classList.remove('on') }
     if (els.length) {
       gsap.killTweensOf(els)
-      gsap.to(els, { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: hidePrev })
+      gsap.to(els, { opacity: 0, y: (i, el) => isVid(el) ? 0 : -24, filter: (i, el) => isVid(el) ? 'none' : 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: hidePrev })
     } else gsap.delayedCall(0.35, hidePrev)
   }
   const flash = document.getElementById('flash')
@@ -226,7 +246,7 @@ function go(n) {
   next.classList.add('on')
   const els = [...next.querySelectorAll('.a')]
   if (els.length) gsap.killTweensOf(els)
-  if (els.length) gsap.fromTo(els, { opacity: 0, y: 34, filter: 'blur(8px)' },
+  if (els.length) gsap.fromTo(els, { opacity: 0, y: (i, el) => isVid(el) ? 0 : 34, filter: (i, el) => isVid(el) ? 'none' : 'blur(8px)' },
     { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, stagger: 0.09, delay: prev ? 0.35 : 0.6, ease: 'power3.out', clearProps: 'filter' })
   cur = n
   sceneTl = SCENES[next.dataset.scene]?.(next) || null
