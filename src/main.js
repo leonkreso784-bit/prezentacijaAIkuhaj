@@ -57,6 +57,18 @@ const PCAM = [[0, 5.6, 9.5], [0, 5.1, 0]]
 // uspravni mobitel: okomita 9:16 verzija videa (ako postoji); bira se odmah da se preuzme prava datoteka
 const pickVideo = (v) => { const src = PT() ? v.dataset.mob : v.dataset.desk; if (v.getAttribute('src') !== src) { v.src = src; v.load() } }
 document.querySelectorAll('video').forEach(pickVideo)
+function playVideo(root, advance) {
+  const v = root.querySelector('video')
+  pickVideo(v)
+  v.currentTime = 0
+  v.muted = false
+  v.onended = advance ? () => { if (slides[cur] === root) go(cur + 1) } : null
+  document.body.classList.add('playing')
+  const tl = gsap.timeline()
+  tl.fromTo(root.querySelector('.video-wrap'), { scale: 0.2, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.35)
+    .call(() => v.play().catch(() => { v.muted = true; v.play() }), null, 0.6)
+  return tl
+}
 const fmt = (n, dec) => n.toFixed(dec).replace('.', ',')
 function countUp(root) {
   root.querySelectorAll('[data-count]').forEach((el) => {
@@ -152,30 +164,23 @@ const SCENES = {
     W.setReels('hidden', { dur: 0.6 })
     W.setIngredients('swirl', { dur: 1.8, stagger: 0.03, hop: 1.2, delay: 0.3 })
   },
-  qr() {
-    PT() ? camTo([0, 6.6, 9.5], [0, 6.1, 0]) : camTo([0, 1.5, 8], [0, 1, 0])
-    pot({ x: PT() ? 0 : -2.5, y: 0, z: 0, s: PT() ? 1.0 : 1.25, ry: 0.35, rx: 0, lift: 0.3, tilt: 0.8, away: 0, boil: 0.6, steam: 1.1 }, 1.8)
-    W.setIngredients('ring', { dur: 1.8, stagger: 0.03, hop: 0.9 })
-    W.setCards('hidden', { dur: 0.6 })
-    W.setReels('hidden', { dur: 0.6 })
-  },
   video(root) {
-    // lonac se zakuha, a crtić izroni ispred njega
+    // lonac se zakuha, a crtić izroni ispred njega; na kraju sam ide dalje
     PT() ? camTo(...PCAM, 1.4) : camTo([0, 1.5, 8], [0, 1, 0], 1.4)
     pot({ x: 0, y: 0, z: 0, s: 1.3, ry: 0, rx: 0, lift: 0.5, tilt: 0.8, away: 0, boil: 1, steam: 1.6 }, 1.2)
     W.setIngredients('ring', { dur: 1.4, stagger: 0.02, hop: 0.6 })
     W.setCards('hidden', { dur: 0.6 })
     W.setReels('hidden', { dur: 0.6 })
-    const v = root.querySelector('video')
-    pickVideo(v)
-    v.currentTime = 0
-    v.muted = false
-    v.onended = () => { if (slides[cur] === root) go(cur + 1) }
-    document.body.classList.add('playing')
-    const tl = gsap.timeline()
-    tl.fromTo(root.querySelector('.video-wrap'), { scale: 0.2, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.35)
-      .call(() => v.play().catch(() => { v.muted = true; v.play() }), null, 0.6)
-    return tl
+    return playVideo(root, true)
+  },
+  demoqr(root) {
+    // demo aplikacije uz QR; kad završi, ostaje na zadnjem kadru dok se ne stisne dalje
+    PT() ? camTo(...PCAM, 1.4) : camTo([0, 1.5, 8], [0, 1, 0], 1.4)
+    pot({ x: 0, y: 0, z: -7, s: 0.0001, boil: 0, steam: 0 }, 1)
+    W.setIngredients('hidden', { dur: 1.1, stagger: 0.02, ease: 'power2.in' })
+    W.setCards('hidden', { dur: 0.6 })
+    W.setReels('hidden', { dur: 0.6 })
+    return playVideo(root, false)
   },
   go(root) {
     const msg = root.querySelector('.go-msg'), flash = document.getElementById('flash')

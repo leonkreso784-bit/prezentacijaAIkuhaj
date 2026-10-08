@@ -2,7 +2,7 @@
 
 Prezentacija u three.js, u stilu aplikacije KuhAI (iste boje, fontovi, ikone i fotke jela).
 Lonac iz loga je 3D. Slajdovi se mijenjaju pokretom kamere i namirnica.
-Na kraju idu QR kod koji vodi na aplikaciju, pa crtić (promo video, 37 s), a zatim zadnji slajd uroni u lonac i odmah otvori aplikaciju.
+Na kraju ide crtić (promo video, 37 s), pa demo aplikacije uz QR kod. Demo ostaje na ekranu dok se ne stisne dalje; tada zadnji slajd uroni u lonac i otvori aplikaciju.
 
 ## Pokretanje
 
@@ -34,7 +34,7 @@ Daljinski za prezentacije (clicker) radi jer šalje PageDown/PageUp.
 
 ## Slajdovi i tekst za govor (3:00)
 
-Videi uzimaju 77 s (demo 40 s + crtić 37 s), za govor ostaje oko 100 s.
+Videi uzimaju 77 s (crtić 37 s + demo 40 s), za govor ostaje oko 100 s.
 
 | # | slajd | ~s | što reći |
 |---|---|---|---|
@@ -42,16 +42,14 @@ Videi uzimaju 77 s (demo 40 s + crtić 37 s), za govor ostaje oko 100 s.
 | 2 | 20 min scrollaš… | 12 | Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura. |
 | 3 | 71 kg | 12 | A ono što već imaš doma završi u smeću. U Hrvatskoj 71 kg hrane po osobi godišnje, tri četvrtine u kućanstvima. |
 | 4 | STOP. KUHAJ → KUHAI | 6 | Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI. |
-| 5 | Kako radi | 12 | Tri koraka: slikaš frižider, dobiješ tjedan, košarica je gotova. Evo uživo. |
-| 6 | demo (40 s) | 40 | Pričaj preko snimke (bez zvuka): Par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan s meal prepom. Ne paše mi jelo? Protresem. I košarica u Konzumu, naručeno. |
-| 7 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
-| 8 | Ispod poklopca: Što smo skuhali | 15 | Iz jedne fotke zna što imaš i što ističe. Za oko minutu složi cijeli tjedan, prvo ono što bi se bacilo. Košarica iz 249 pravih Konzumovih proizvoda. I radi uživo, probajte. |
-| 9 | QR | 10 | Ne vjerujte nam na riječ. Skenirajte i probajte odmah. |
-| 10 | crtić (37 s) | 37 | Pušta se sam, sa zvukom. Kad završi, sam ide na zadnji slajd. |
-| 11 | → aplikacija | | Kamera uroni u lonac i otvori se aplikacija. |
+| 5 | Kako radi | 15 | Tri koraka: slikaš frižider, dobiješ cijeli tjedan, košarica je gotova. Uživo ćemo pokazati na kraju. |
+| 6 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
+| 7 | Ispod poklopca: Što smo skuhali | 18 | Iz jedne fotke zna što imaš i što ističe. Za oko minutu složi cijeli tjedan, prvo ono što bi se bacilo. Košarica iz 249 pravih Konzumovih proizvoda. I radi uživo. |
+| 8 | crtić (37 s) | 37 | Pušta se sam, sa zvukom. Kad završi, sam prelazi na demo s QR kodom. |
+| 9 | demo + QR (40 s) | 40 | Demo ide sam, bez zvuka; pričaj preko njega: Skenirajte i probajte odmah. Par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac… i košarica u Konzumu, naručeno. **Kad demo završi, slajd ostaje** (QR i dalje na ekranu). |
+| 10 | → aplikacija | | Tek kad stisneš dalje: kamera uroni u lonac i otvori se aplikacija. |
 
-Demo i crtić idu sami i na kraju sami prelaze na sljedeći slajd; tipka dalje ih preskače.
-Slajd „Tvoj tjedan“ (kartice jela u 3D) izbačen je jer demo pokazuje isto uživo; vraća se iz git povijesti.
+Tipka dalje preskače crtić i demo.
 
 ## Izvori i napomene
 
@@ -75,7 +73,7 @@ Slajd „Tvoj tjedan“ (kartice jela u 3D) izbačen je jer demo pokazuje isto u
 ```
 node demo/record.mjs     # prođe kroz živu aplikaciju na mobitelu (390×844) i snimi ekran → demo/out/rec
 node demo/compose.mjs    # telefon u okviru + naslovi poglavlja, čekanje na AI ubrzano → demo/out/kuhai-demo.mp4 (82 s)
-node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → demo/out/kuhai-demo-kratko.mp4 = public/demo.mp4
+node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → demo/out/kuhai-demo-kratko.mp4 = public/demo.mp4 (slajd demo + QR)
 ```
 
 Snimanje traje oko 4 minute jer pravi AI pozivi traju (plan 60–90 s). U videu je to ubrzano uz oznaku „ubrzano ×N“.

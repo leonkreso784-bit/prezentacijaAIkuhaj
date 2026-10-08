@@ -131,6 +131,16 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; cursor: de
 body.playing #hud { opacity: 0; }
 #hud { transition: opacity .4s; }
 
+/* demo + QR */
+.s-qrdemo .video-wrap { inset: 0 auto 0 calc(var(--u) * 5); margin: auto 0; width: calc(var(--u) * 116); height: calc(var(--u) * 65.25); }
+.s-qrdemo .qr-col { position: absolute; right: calc(var(--u) * 4); top: 50%; translate: 0 -50%; width: calc(var(--u) * 50); text-align: center; }
+.s-qrdemo .h { font-size: calc(var(--u) * 5); }
+.s-qrdemo #qr { width: calc(var(--u) * 38); height: calc(var(--u) * 38); }
+body.portrait .s-qrdemo .video-wrap { inset: calc(var(--u) * 12) 0 auto 0; margin: 0 auto; }
+body.portrait .s-qrdemo .qr-col { left: 0; right: 0; width: auto; top: auto; bottom: calc(var(--u) * 10); translate: none; }
+body.portrait .s-qrdemo #qr { width: calc(var(--u) * 52); height: calc(var(--u) * 52); }
+body.portrait .s-qrdemo::before { display: none; }
+
 /* 10 · odlazak */
 .go-msg { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: calc(var(--u) * 3); z-index: 2; }
 .go-msg p { font-family: var(--display); font-weight: 700; font-size: calc(var(--u) * 6); color: var(--ink); letter-spacing: -0.03em; }
@@ -192,8 +202,8 @@ body.portrait .tag .big { font-size: calc(var(--u) * 6.4); }
 body.portrait .tag small { font-size: calc(var(--u) * 2.8); }
 body.portrait .qr-col { width: auto; }
 body.portrait #qr { width: calc(var(--u) * 62); height: calc(var(--u) * 62); }
-body.portrait .s-demo .video-wrap { height: auto; width: calc(100vw - var(--u) * 6); aspect-ratio: 16 / 9; border-radius: calc(var(--u) * 3); }
-body.portrait .video-wrap { inset: auto; left: 50%; top: 50%; translate: -50% -50%; height: min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)); aspect-ratio: 9 / 16; border-radius: calc(var(--u) * 5); }
+body.portrait .s-demo .video-wrap { width: calc(100vw - var(--u) * 6); height: calc((100vw - var(--u) * 6) * 9 / 16); border-radius: calc(var(--u) * 3); }
+body.portrait .video-wrap { inset: 0; margin: auto; height: min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)); width: calc(min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)) * 9 / 16); border-radius: calc(var(--u) * 5); }
 body.portrait .go-msg p { font-size: calc(var(--u) * 8); }
 body.portrait #hint { font-size: calc(var(--u) * 2.8); white-space: nowrap; }
 body.portrait .dots i { width: calc(var(--u) * 1.4); height: calc(var(--u) * 1.4); }

@@ -47,35 +47,43 @@ console.log('PC 1920×1080, prolaz naprijed')
     if (s.on !== 1) fail(`slajd ${i + 1}: vidljivo ${s.on} slajdova`)
     if (s.minOpacity < 0.99) fail(`slajd ${i + 1} (${s.scene}): tekst nije do kraja vidljiv (${s.minOpacity})`)
     const playing = s.vids.filter((v) => !v.paused)
-    if (s.scene === 'video') { if (playing.length !== 1) fail(`slajd ${i + 1}: video ne svira`) }
+    if (['video', 'demoqr'].includes(s.scene)) { if (playing.length !== 1) fail(`slajd ${i + 1}: video ne svira`) }
     else if (playing.length) fail(`slajd ${i + 1}: video svira u pozadini (${playing.map((v) => v.id)})`)
-    if (['title', 'kuhaj', 'tech', 'qr'].includes(s.scene)) console.log(`    ${s.scene}: ${await fps(p)} fps`)
+    if (['title', 'kuhaj', 'tech', 'nums'].includes(s.scene)) console.log(`    ${s.scene}: ${await fps(p)} fps`)
   }
   ok(`prošao ${n - 1} slajdova`)
-  // videi sami prelaze dalje
-  await p.evaluate(() => window.__go(5)); await p.waitForTimeout(1500)
-  await p.evaluate(() => { document.getElementById('demo').currentTime = 39.2 })
-  await p.waitForFunction(() => document.querySelector('.slide.on:last-of-type, .slide.on')?.dataset.scene !== 'video' || [...document.querySelectorAll('.slide.on')].at(-1).dataset.scene === 'nums', null, { timeout: 15000 }).catch(() => {})
-  await p.waitForTimeout(1500)
-  ;(await state(p)).scene === 'nums' ? ok('demo na kraju sam prelazi na brojke') : fail('demo ne prelazi sam dalje')
-  // natrag na demo: svira ispočetka, crtić stoji
-  await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(2500)
+  // crtić na kraju sam prelazi na demo + QR
+  await p.evaluate(() => window.__go(7)); await p.waitForTimeout(2000)
   let s = await state(p)
-  s.scene === 'video' && s.vids.find((v) => v.id === 'demo' && !v.paused && v.t < 3) ? ok('natrag na demo: svira ispočetka') : fail('natrag na demo ne radi: ' + JSON.stringify(s))
+  s.vids.find((v) => v.id === 'crtic' && !v.paused) ? ok('crtić svira') : fail('crtić ne svira')
+  await p.evaluate(() => { document.getElementById('crtic').currentTime = 36.6 })
+  await p.waitForFunction(() => [...document.querySelectorAll('.slide.on')].at(-1)?.dataset.scene === 'demoqr', null, { timeout: 15000 }).catch(() => {})
+  await p.waitForTimeout(2000)
+  s = await state(p)
+  s.scene === 'demoqr' && s.vids.find((v) => v.id === 'demo' && !v.paused) ? ok('nakon crtića: demo + QR, demo svira') : fail('nakon crtića nije demo + QR: ' + JSON.stringify(s))
+  const qr = await p.$eval('#qr svg', (e) => e.getBoundingClientRect().width)
+  qr > 250 ? ok(`QR vidljiv (${qr | 0} px)`) : fail('QR premalen')
+  // natrag na crtić: svira ispočetka, demo stoji
+  await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(2500)
+  s = await state(p)
+  s.vids.find((v) => v.id === 'crtic' && !v.paused && v.t < 3) && s.vids.find((v) => v.id === 'demo' && v.paused) ? ok('natrag na crtić: svira ispočetka') : fail('natrag na crtić: ' + JSON.stringify(s))
   // brzo klikanje
+  await p.evaluate(() => window.__go(3)); await p.waitForTimeout(1000)
   for (const k of ['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'ArrowLeft']) { await p.keyboard.press(k); await p.waitForTimeout(90) }
   await p.waitForTimeout(2500)
   s = await state(p)
-  s.on === 1 && s.minOpacity > 0.99 && !s.vids.some((v) => !v.paused && s.scene !== 'video') ? ok(`brzo klikanje: čisto (${s.scene})`) : fail('brzo klikanje: ' + JSON.stringify(s))
-  // QR → crtić → kraj crtića → odlazak na aplikaciju
-  await p.evaluate(() => window.__go(8)); await p.waitForTimeout(1500)
-  const qr = await p.$eval('#qr svg', (e) => e.getBoundingClientRect().width)
-  qr > 300 ? ok(`QR vidljiv (${qr | 0} px)`) : fail('QR premalen')
-  await p.keyboard.press('ArrowRight'); await p.waitForTimeout(2000)
+  s.on === 1 && s.minOpacity > 0.99 && !s.vids.some((v) => !v.paused) ? ok(`brzo klikanje: čisto (${s.scene})`) : fail('brzo klikanje: ' + JSON.stringify(s))
+  // demo do kraja: ostaje na slajdu; tek strelica otvara aplikaciju
+  await p.evaluate(() => window.__go(8)); await p.waitForTimeout(2000)
+  await p.evaluate(() => { document.getElementById('demo').currentTime = 39.2 })
+  await p.waitForTimeout(5000)
   s = await state(p)
-  s.vids.find((v) => v.id === 'crtic' && !v.paused) ? ok('crtić svira') : fail('crtić ne svira')
-  await p.evaluate(() => { document.getElementById('crtic').currentTime = 36.6 })
-  await p.waitForURL(APP, { timeout: 15000 }).then(() => ok('nakon crtića otvara se aplikacija')).catch(() => fail('nakon crtića se ne otvara aplikacija'))
+  s.scene === 'demoqr' && !p.url().startsWith(APP) ? ok('demo završio, ostaje na slajdu s QR kodom') : fail('demo nije ostao na slajdu: ' + JSON.stringify(s))
+  const box = await p.$eval('.s-qrdemo .video-wrap', (e) => { const r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, h: innerHeight } })
+  box.top >= 0 && box.bottom <= box.h ? ok('demo je cijeli na ekranu i nakon ponovnog ulaska') : fail('demo izlazi iz ekrana: ' + JSON.stringify(box))
+  await p.screenshot({ path: `${OUT}/pc-demoqr-kraj.png` })
+  await p.keyboard.press('ArrowRight')
+  await p.waitForURL(APP, { timeout: 15000 }).then(() => ok('strelica otvara aplikaciju')).catch(() => fail('strelica ne otvara aplikaciju'))
   logs.length ? logs.forEach((l) => fail(l)) : ok('nema grešaka u konzoli')
   await p.close()
 }
@@ -83,7 +91,7 @@ console.log('PC 1920×1080, prolaz naprijed')
 // ---------- 2. projektor 16:10 i 4:3 ----------
 for (const [w, h] of [[1280, 800], [1024, 768]]) {
   const { p } = await open({ viewport: { width: w, height: h } }, '?noredirect')
-  for (const i of [0, 4, 6, 7, 8]) { await p.evaluate((i) => window.__go(i), i); await p.waitForTimeout(2600); await p.screenshot({ path: `${OUT}/r${w}x${h}-${i + 1}.png` }) }
+  for (const i of [0, 4, 5, 6, 8]) { await p.evaluate((i) => window.__go(i), i); await p.waitForTimeout(2600); await p.screenshot({ path: `${OUT}/r${w}x${h}-${i + 1}.png` }) }
   ok(`${w}×${h} snimljeno`)
   await p.close()
 }

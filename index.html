@@ -58,7 +58,7 @@
 
     <!-- 4 · kako radi -->
     <section class="slide s-how" data-scene="how"
-      data-notes="Kako radi? Odgovoriš na par brzih pitanja i slikaš frižider. AI prepozna namirnice i što uskoro ističe. Dobiješ cijeli tjedan: jelovnik, meal prep u dva bloka i košaricu u Konzumu sa samo onim što fali.">
+      data-notes="Kako radi? Odgovoriš na par brzih pitanja i slikaš frižider. (Uživo to pokazujemo na kraju, uz QR.) AI prepozna namirnice i što uskoro ističe. Dobiješ cijeli tjedan: jelovnik, meal prep u dva bloka i košaricu u Konzumu sa samo onim što fali.">
       <div class="col-right">
         <p class="a kicker">Kako radi</p>
         <h2 class="a h">Tri koraka do cijelog tjedna.</h2>
@@ -70,13 +70,7 @@
       </div>
     </section>
 
-    <!-- 5 · demo aplikacije (Playwright snimka, bez glazbe: pričaš preko nje) -->
-    <section class="slide s-video s-demo" data-scene="video"
-      data-notes="Demo (40 s), pričaj preko njega: Ovo je prava aplikacija, uživo. Par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan s meal prepom. Ne paše mi jelo? Protresem. I na kraju košarica u Konzumu, naručeno.">
-      <div class="a video-wrap"><video id="demo" data-desk="./demo.mp4" data-mob="./demo.mp4" preload="auto" playsinline></video></div>
-    </section>
-
-    <!-- 6 · brojke -->
+    <!-- 5 · brojke -->
     <section class="slide s-nums" data-scene="nums"
       data-notes="Brojke na primjeru jednog tjedna iz aplikacije: cijela košarica 58 eura, to je 250 eura manje nego da sve naručiš. I 11 eura hrane spašeno od bacanja.">
       <div class="col-left">
@@ -91,7 +85,7 @@
       </div>
     </section>
 
-    <!-- 7 · tehnologija -->
+    <!-- 6 · tehnologija -->
     <section class="slide s-tech" data-scene="tech"
       data-notes="Što smo skuhali: aplikacija iz jedne fotke frižidera prepozna što imaš i što uskoro ističe. Za oko minutu složi cijeli tjedan obroka, prvo ono što bi se bacilo. Košaricu puni iz 249 pravih Konzumovih proizvoda, po pravim cijenama i pakiranjima. I to nije slika na slajdu: radi uživo, na mobitelu i na webu.">
       <div class="center-top">
@@ -106,23 +100,24 @@
       </div>
     </section>
 
-    <!-- 8 · QR -->
-    <section class="slide s-qr" data-scene="qr"
-      data-notes="Ne vjerujte nam na riječ. Skenirajte QR kod i probajte odmah, dok mi otvaramo aplikaciju.">
-      <div class="col-right qr-col">
+    <!-- 7 · crtić (promo video) -->
+    <section class="slide s-video" data-scene="video"
+      data-notes="Crtić (37 s) ide sam, sa zvukom. Kad završi, sam prelazi na demo s QR kodom. Tipka dalje ga preskače.">
+      <div class="a video-wrap"><video id="crtic" data-desk="./crtic.mp4" data-mob="./crtic-mob.mp4" preload="auto" playsinline></video></div>
+    </section>
+
+    <!-- 8 · demo aplikacije + QR: nakon kraja dema ostaje se ovdje, strelica vodi na aplikaciju -->
+    <section class="slide s-video s-demo s-qrdemo" data-scene="demoqr"
+      data-notes="Demo (40 s) ide sam, bez zvuka, a QR je pored. Pričaj: Skenirajte i probajte odmah. Ovo je prava aplikacija: par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan. Ne paše mi jelo? Protresem. I košarica u Konzumu, naručeno. Kad demo završi, slajd ostaje; strelica otvara aplikaciju.">
+      <div class="a video-wrap"><video id="demo" data-desk="./demo.mp4" data-mob="./demo.mp4" preload="auto" playsinline></video></div>
+      <div class="qr-col">
         <p class="a kicker">Probaj odmah</p>
         <h2 class="a h">Skeniraj i skuhaj.</h2>
         <div class="a card qr-card"><div id="qr"></div></div>
       </div>
     </section>
 
-    <!-- 9 · crtić (promo video) -->
-    <section class="slide s-video" data-scene="video"
-      data-notes="Crtić (37 s) ide sam, sa zvukom. Kad završi, sam otvara aplikaciju. Tipka dalje ga preskače.">
-      <div class="a video-wrap"><video id="crtic" data-desk="./crtic.mp4" data-mob="./crtic-mob.mp4" preload="auto" playsinline></video></div>
-    </section>
-
-    <!-- 10 · odlazak na aplikaciju -->
+    <!-- 9 · odlazak na aplikaciju -->
     <section class="slide s-go" data-scene="go" data-notes="Otvaram aplikaciju.">
       <div class="go-msg"><img class="logo" data-src="logo" alt="" /><p>Otvaram Kuh<em>AI</em>…</p></div>
     </section>
