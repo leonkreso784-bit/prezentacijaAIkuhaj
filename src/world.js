@@ -66,7 +66,7 @@ export function createWorld(canvas, { images, logo }) {
     g.fillStyle = C.cream
     g.font = '900 560px Nunito'
     g.textAlign = 'center'; g.textBaseline = 'alphabetic'
-    g.fillText('AI', 2048, 560)
+    g.fillText('Ai', 2048, 560)
   }
   const aiTex = new THREE.CanvasTexture(aiCanvas)
   aiTex.colorSpace = THREE.SRGBColorSpace
@@ -341,19 +341,11 @@ export function createWorld(canvas, { images, logo }) {
     hidden(it, t, o) { o.pos.set((it.rnd[0] - 0.5) * 6, 6 + it.rnd[1] * 2, -2 + it.rnd[2] * 2); o.scale = 0.0001; o.euler.set(0, 0, 0); o.gray = 0 },
     ring(it, t, o) {
       const n = ingredients.length, a = it.i / n * TAU + t * 0.12
-      // prednji dio kruga ide iznad lonca, stražnji iza njega: namirnice ne prekrivaju natpis AI
+      // prednji dio kruga ide iznad lonca, stražnji iza njega: namirnice ne prekrivaju natpis Ai
       const rr = (1.9 + (it.i % 3) * 0.28) * potState.s, f = Math.sin(a)
       o.pos.set(potState.x + Math.cos(a) * rr * 0.92, potState.y + (1.05 + f * 0.8 + (it.i % 4) * 0.16 + Math.sin(t * 0.9 + it.i) * 0.1) * potState.s, potState.z - 0.3 + f * rr * 0.55)
       o.euler.set(it.rnd[0] * TAU + t * (0.3 + it.rnd[1] * 0.4), it.rnd[2] * TAU + t * 0.5, 0)
       o.scale = 1.05; o.gray = 0
-    },
-    cloud(it, t, o) {
-      // "pun frižider": namirnice lebde u oblaku desno (na mobitelu dolje)
-      const [a, b, c, d] = it.rnd
-      if (portrait) o.pos.set((a - 0.5) * 4.8, 0.5 + b * 4.0 + Math.sin(t * 0.8 + it.i) * 0.12, (c - 0.5) * 2.2)
-      else o.pos.set(1.0 + a * 3.4, 0.25 + b * 2.6 + Math.sin(t * 0.8 + it.i) * 0.12, -0.8 + c * 1.8)
-      o.euler.set(d * TAU + t * (0.25 + c * 0.3), a * TAU + t * (0.3 + b * 0.3), 0)
-      o.scale = portrait ? 1.9 : 1.3; o.gray = 0
     },
     fallen(it, t, o) {
       const a = it.rnd[0] * TAU, r = Math.sqrt(it.rnd[1]) * (portrait ? 1.25 : 1.6)

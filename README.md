@@ -1,6 +1,6 @@
-# KuhAI pitch (3 min)
+# KuhAi pitch (3 min)
 
-Prezentacija u three.js, u stilu aplikacije KuhAI (iste boje, fontovi, ikone i fotke jela).
+Prezentacija u three.js, u stilu aplikacije KuhAi (iste boje, fontovi, ikone i fotke jela).
 Lonac iz loga je 3D. Slajdovi se mijenjaju pokretom kamere i namirnica.
 Na kraju ide crtić (promo video, 37 s), pa demo aplikacije uz QR kod. Demo ostaje na ekranu dok se ne stisne dalje; tada zadnji slajd uroni u lonac i otvori aplikaciju.
 
@@ -38,10 +38,10 @@ Videi uzimaju 77 s (crtić 37 s + demo 40 s), za govor ostaje oko 100 s.
 
 | # | slajd | ~s | što reći |
 |---|---|---|---|
-| 1 | KuhAI | 8 | Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru. |
+| 1 | KuhAI | 8 | Bok! Mi smo KuhAi. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru. |
 | 2 | 20 min scrollaš… | 12 | Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura. |
-| 3 | „Što ćemo danas jesti?“ | 12 | I svaki dan isto pitanje: što ćemo danas jesti? Otvoriš frižider, pun je… a ti opet: nemam ništa za jesti. 365 puta godišnje. |
-| 4 | STOP. KUHAJ → KUHAI | 6 | Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI. |
+| 3 | STOP. | 3 | (crveni ekran) Stop. |
+| 4 | KUHAJ → KuhAi | 6 | Kuhaj. A AI ti pomaže, zato KuhAi. |
 | 5 | Kako radi | 15 | Tri koraka: slikaš frižider, dobiješ cijeli tjedan, košarica je gotova. Uživo ćemo pokazati na kraju. |
 | 6 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
 | 7 | Ispod poklopca: Što smo skuhali | 18 | Iz jedne fotke zna što imaš i što ističe. Za oko minutu složi cijeli tjedan, prvo ono što bi se bacilo. Košarica iz 249 pravih Konzumovih proizvoda. I radi uživo. |
@@ -75,3 +75,7 @@ node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → 
 
 Snimanje traje oko 4 minute jer pravi AI pozivi traju (plan 60–90 s). U videu je to ubrzano uz oznaku „ubrzano ×N“.
 Fotka frižidera: `demo/frizider.jpg` ([Pexels 4443433](https://www.pexels.com/photo/4443433/), Pexels License).
+
+## Ime: KuhAi
+
+U brendu se piše **KuhAi** (malo i), da logo ne podsjeća na A1. Logo s „Ai“: `node tools/logo.mjs` → `src/assets/logo-ai.png`.

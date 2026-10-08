@@ -1,4 +1,4 @@
-/* KuhAI pitch: tokeni preuzeti iz aplikacije (SHAKER projekt/web/src/index.css) */
+/* KuhAi pitch: tokeni preuzeti iz aplikacije (SHAKER projekt/web/src/index.css) */
 :root {
   --brand: #D0161B;
   --brand-dark: #A91115;
@@ -72,12 +72,20 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; cursor: de
 .mega .num { letter-spacing: -0.06em; }
 .mega small { font-family: var(--display); font-size: .3em; font-weight: 700; margin-left: .15em; color: var(--muted); }
 
-/* 2 · pitanje */
-.h.q { font-size: calc(var(--u) * 8.6); letter-spacing: -0.03em; }
-.ink { color: var(--ink); }
-body.portrait .h.q { font-size: calc(var(--u) * 9); }
+/* 2 · STOP. */
+#flash.stop { background: var(--brand); overflow: hidden; }
+#rays { position: absolute; left: 50%; top: 50%; width: 260vmax; height: 260vmax; margin: -130vmax 0 0 -130vmax; opacity: 0;
+  background: repeating-conic-gradient(rgb(255 255 255 / .09) 0 9deg, transparent 9deg 18deg); }
+#flash.stop #rays { opacity: 1; }
+.stop-wrap { position: absolute; inset: 0; display: grid; place-items: center; }
+.stop-big { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 30); line-height: 1; color: var(--cream);
+  letter-spacing: -0.04em; text-shadow: 0 calc(var(--u) * 1.4) 0 rgb(80 6 8 / .35); opacity: 0; }
+body.portrait .stop-big { font-size: calc(var(--u) * 19); }
+body.on-stop .dots i { background: rgb(255 255 255 / .3); }
+body.on-stop .dots i.on { background: var(--cream); }
+body.portrait .s-stop::before { display: none; }
 
-/* 3 · STOP. KUHAJ. */
+/* 3 · KUHAJ → KuhAi */
 .stop { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 6); color: var(--muted); letter-spacing: .02em; }
 .kuhaj { font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 19); line-height: 1; letter-spacing: -0.04em; margin-top: calc(var(--u) * 1); display: inline-flex; }
 .kuhaj > span { display: inline-block; }

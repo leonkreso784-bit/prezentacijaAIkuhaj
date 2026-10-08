@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFBF6" />
-  <title>KuhAI pitch</title>
+  <title>KuhAi pitch</title>
 </head>
 <body>
   <canvas id="gl"></canvas>
@@ -12,10 +12,10 @@
   <main id="deck">
     <!-- 0 · naslov -->
     <section class="slide s-title" data-scene="title"
-      data-notes="Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru.">
+      data-notes="Bok! Mi smo KuhAi. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru.">
       <div class="col-left">
         <div class="a brand-row"><img class="logo" data-src="logo" alt="" /><span class="pill">AI smišlja, ti kuhaš.</span></div>
-        <h1 class="a wordmark">Kuh<em>AI</em></h1>
+        <h1 class="a wordmark">Kuh<em>Ai</em></h1>
         <p class="a lead">Slikaj frižider. Dobij cijeli tjedan hrane.</p>
         <p class="a sub">Meal prep i košarica u Konzumu, bez bacanja.</p>
       </div>
@@ -35,26 +35,16 @@
       </div>
     </section>
 
-    <!-- 2 · problem: svaki dan isto pitanje -->
-    <section class="slide s-question" data-scene="question"
-      data-notes="I svaki dan isto pitanje: što ćemo danas jesti? Otvoriš frižider, pun je… a ti opet: nemam ništa za jesti. 365 puta godišnje.">
-      <div class="col-left">
-        <p class="a kicker">Svaki dan isto pitanje</p>
-        <h2 class="a h q">„Što ćemo danas jesti?“</h2>
-        <p class="a sub">Frižider je pun, a ti opet: <b class="ink">„nemam ništa za jesti“</b>.</p>
-        <div class="a chips">
-          <span class="chip"><b class="num">365×</b> godišnje</span>
-          <span class="chip hot"><b class="num">19:00</b> nula ideja</span>
-        </div>
-      </div>
+    <!-- 2 · STOP. (crveni ekran, uvod u KUHAJ) -->
+    <section class="slide s-stop" data-scene="stop" data-notes="Stop.">
+      <div class="stop-wrap"><p class="stop-big">STOP.</p></div>
     </section>
 
-    <!-- 3 · STOP. KUHAJ. -->
+    <!-- 3 · KUHAJ → KuhAi -->
     <section class="slide s-kuhaj" data-scene="kuhaj"
-      data-notes="Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI.">
+      data-notes="Kuhaj. A AI ti pomaže, zato KuhAi.">
       <div class="center-top">
-        <p class="a stop">STOP.</p>
-        <h1 class="a kuhaj" aria-label="KuhAI"><span>K</span><span>U</span><span>H</span><span class="ja"><i class="j">AJ</i><i class="ai">AI</i></span></h1>
+        <h1 class="a kuhaj" aria-label="KuhAi"><span>K</span><span>U</span><span>H</span><span class="ja"><i class="j">AJ</i><i class="ai">Ai</i></span></h1>
       </div>
     </section>
 
@@ -76,7 +66,7 @@
     <section class="slide s-nums" data-scene="nums"
       data-notes="Brojke na primjeru jednog tjedna iz aplikacije: cijela košarica 58 eura, to je 250 eura manje nego da sve naručiš. I 11 eura hrane spašeno od bacanja.">
       <div class="col-left">
-        <p class="a kicker">Jedan tjedan s KuhAI</p>
+        <p class="a kicker">Jedan tjedan s KuhAi</p>
         <h2 class="a h">Manje novca. Manje bacanja.</h2>
         <div class="nums">
           <div class="a card stat"><small>Cijela košarica</small><b class="num" data-count="58.40">58,40 €</b><span>za tjedan, Konzum</span></div>
@@ -121,11 +111,11 @@
 
     <!-- 9 · odlazak na aplikaciju -->
     <section class="slide s-go" data-scene="go" data-notes="Otvaram aplikaciju.">
-      <div class="go-msg"><img class="logo" data-src="logo" alt="" /><p>Otvaram Kuh<em>AI</em>…</p></div>
+      <div class="go-msg"><img class="logo" data-src="logo" alt="" /><p>Otvaram Kuh<em>Ai</em>…</p></div>
     </section>
   </main>
 
-  <div id="flash"></div>
+  <div id="flash"><div id="rays"></div></div>
   <footer id="hud">
     <div class="dots" id="dots"></div>
     <div id="timer" hidden>3:00</div>

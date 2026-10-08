@@ -10,7 +10,7 @@ import gsap from 'gsap'
 import QRCode from 'qrcode'
 import { createWorld } from './world.js'
 import { APP_URL } from './config.js'
-import logoUrl from './assets/logo.png'
+import logoUrl from './assets/logo-ai.png'
 import icons from './assets/icons.json'
 
 const foodUrls = import.meta.glob('./assets/food/*.jpg', { eager: true, import: 'default' })
@@ -96,13 +96,20 @@ const SCENES = {
     W.setCards('hidden', { dur: 0.8 })
     W.setReels('feed', { dur: 1.6, stagger: 0.08, ease: 'power3.out' })
   },
-  question() {
-    // pun frižider: šarene namirnice lebde, a ideje nema
-    PT() ? camTo(...PCAM) : camTo([0, 1.5, 8], [0, 1.1, 0])
-    pot({ x: 4.5, y: 0, z: -4, s: 0.0001, steam: 0, boil: 0 }, 1)
-    W.setReels('hidden', { dur: 0.9, stagger: 0.03, ease: 'power2.in' })
+  stop(root) {
+    // crveni ekran sa zrakama, STOP. udari i zatrese se
+    W.setReels('hidden', { dur: 0.7, stagger: 0.03, ease: 'power2.in' })
     W.setCards('hidden', { dur: 0.6 })
-    W.setIngredients('cloud', { dur: 1.6, stagger: 0.05, delay: 0.25, hop: 0.6, ease: 'back.out(1.4)' })
+    W.setIngredients('hidden', { dur: 0.8, stagger: 0.015, ease: 'power2.in' })
+    pot({ x: 0, y: 0, z: 0, s: 0.0001, steam: 0, boil: 0 }, 0.6)
+    const flash = document.getElementById('flash'), txt = root.querySelector('.stop-big'), wrap = root.querySelector('.stop-wrap')
+    flash.classList.add('stop')
+    const tl = gsap.timeline()
+    tl.fromTo(flash, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power1.in' }, 0)
+      .fromTo('#rays', { rotation: 0 }, { rotation: 40, duration: 8, ease: 'none' }, 0)
+      .fromTo(txt, { scale: 4.5, rotation: -10, opacity: 0 }, { scale: 1, rotation: -4, opacity: 1, duration: 0.32, ease: 'power4.in' }, 0.15)
+      .to(wrap, { keyframes: { x: [0, -22, 18, -14, 10, -6, 0], y: [0, 14, -12, 8, -6, 4, 0] }, duration: 0.42, ease: 'none' }, 0.47)
+    return tl
   },
   kuhaj(root) {
     PT() ? camTo(...PCAM, 1.6) : camTo([0, 2.3, 8.4], [0, 1.75, 0], 1.6)
@@ -111,24 +118,22 @@ const SCENES = {
     gsap.killTweensOf(P)
     gsap.set(P, { x: 0, y: 0, z: 0, s: 0.0001, ry: -0.2, rx: 0, lift: 0, tilt: 0, away: 0, boil: 0, steam: 0 })
     const k = root.querySelector('.kuhaj'), letters = k.querySelectorAll(':scope > span'), j = k.querySelector('.j'), ai = k.querySelector('.ai')
-    const stop = root.querySelector('.stop')
-    gsap.set([stop, ...letters], { opacity: 0 })
+    gsap.set(letters, { opacity: 0 })
     gsap.set(j, { opacity: 1, rotationX: 0, x: 0 })
     gsap.set(ai, { opacity: 0, rotationX: -90 })
     k.classList.remove('glitch')
     const tl = gsap.timeline()
-    tl.fromTo(stop, { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(3)' }, 0.25)
-      .fromTo(letters, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'back.out(2.5)' }, 0.75)
-      .to(P, { s: PT() ? 1.45 : 1.3, duration: 0.7, ease: 'back.out(1.7)' }, 0.8)
+    tl.fromTo(letters, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'back.out(2.5)' }, 0.3)
+      .to(P, { s: PT() ? 1.45 : 1.3, duration: 0.7, ease: 'back.out(1.7)' }, 0.35)
       .add(() => W.setIngredients('pot', { dur: 1.1, stagger: 0.035, hop: 1.4, ease: 'power2.in' }), 0.9)
-      .call(() => k.classList.add('glitch'), null, 1.6)
-      .to(j, { keyframes: { x: [0, -14, 10, -6, 12, 0], skewX: [0, 14, -10, 6, 0, 0] }, duration: 0.5, ease: 'none' }, 1.6)
-      .call(() => k.classList.remove('glitch'), null, 2.1)
-      .to(j, { rotationX: 90, opacity: 0, duration: 0.25, ease: 'power2.in' }, 2.1)
-      .to(ai, { rotationX: 0, opacity: 1, duration: 0.45, ease: 'back.out(2.5)' }, 2.3)
-      .to(P, { lift: 0.7, tilt: 1, duration: 0.35, ease: 'back.out(3)' }, 2.3)
-      .to(P, { steam: 2.2, boil: 1, duration: 0.3 }, 2.3)
-      .to(P, { lift: 0.32, steam: 1.2, boil: 0.6, duration: 1.4, ease: 'power2.inOut' }, 2.8)
+      .call(() => k.classList.add('glitch'), null, 1.15)
+      .to(j, { keyframes: { x: [0, -14, 10, -6, 12, 0], skewX: [0, 14, -10, 6, 0, 0] }, duration: 0.5, ease: 'none' }, 1.15)
+      .call(() => k.classList.remove('glitch'), null, 1.65)
+      .to(j, { rotationX: 90, opacity: 0, duration: 0.25, ease: 'power2.in' }, 1.65)
+      .to(ai, { rotationX: 0, opacity: 1, duration: 0.45, ease: 'back.out(2.5)' }, 1.85)
+      .to(P, { lift: 0.7, tilt: 1, duration: 0.35, ease: 'back.out(3)' }, 1.85)
+      .to(P, { steam: 2.2, boil: 1, duration: 0.3 }, 1.85)
+      .to(P, { lift: 0.32, steam: 1.2, boil: 0.6, duration: 1.4, ease: 'power2.inOut' }, 2.35)
     return tl
   },
   how() {
@@ -215,7 +220,9 @@ function go(n) {
       gsap.to(els, { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: hidePrev })
     } else gsap.delayedCall(0.35, hidePrev)
   }
-  gsap.set('#flash', { opacity: 0 })
+  const flash = document.getElementById('flash')
+  if (flash.classList.contains('stop')) gsap.to(flash, { opacity: 0, duration: 0.45, ease: 'power2.out', overwrite: true, onComplete: () => flash.classList.remove('stop') })
+  else gsap.set(flash, { opacity: 0 })
   next.classList.add('on')
   const els = [...next.querySelectorAll('.a')]
   if (els.length) gsap.killTweensOf(els)
@@ -223,6 +230,7 @@ function go(n) {
     { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, stagger: 0.09, delay: prev ? 0.35 : 0.6, ease: 'power3.out', clearProps: 'filter' })
   cur = n
   sceneTl = SCENES[next.dataset.scene]?.(next) || null
+  document.body.classList.toggle('on-stop', next.dataset.scene === 'stop')
   ;[...dots.children].forEach((d, i) => d.classList.toggle('on', i === n))
   history.replaceState(null, '', `#${n + 1}`)
   updateNotes()
