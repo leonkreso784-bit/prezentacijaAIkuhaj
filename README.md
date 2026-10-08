@@ -70,7 +70,8 @@ Tipka dalje preskače crtić i demo.
 ```
 node demo/record.mjs     # prođe kroz živu aplikaciju na mobitelu (390×844) i snimi ekran → demo/out/rec
 node demo/compose.mjs    # telefon u okviru + naslovi poglavlja, čekanje na AI ubrzano → demo/out/kuhai-demo.mp4 (82 s)
-node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → demo/out/kuhai-demo-kratko.mp4 = public/demo.mp4 (slajd demo + QR)
+node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → demo/out/kuhai-demo-kratko.mp4 = public/demo-mob.mp4 (mobitel)
+node demo/compose.mjs --kratko --slajd   # isto, veliki telefon preko cijelog slajda → public/demo.mp4 (slajd demo + QR)
 ```
 
 Snimanje traje oko 4 minute jer pravi AI pozivi traju (plan 60–90 s). U videu je to ubrzano uz oznaku „ubrzano ×N“.

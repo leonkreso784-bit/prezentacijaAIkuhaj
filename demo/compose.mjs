@@ -9,9 +9,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 // --kratko: verzija od ~40 s za pitch (bez AI pitanja i recepta, brže)
 const SHORT = process.argv.includes('--kratko')
-const args = process.argv.slice(2).filter((a) => a !== '--kratko')
+// --slajd: raspored za prezentaciju (veći telefon, desno mjesto za QR)
+const SLIDE = process.argv.includes('--slajd')
+const args = process.argv.slice(2).filter((a) => a !== '--kratko' && a !== '--slajd')
 const REC = args[0] || path.join(HERE, 'out', 'rec')
-const OUT = args[1] || path.join(HERE, 'out', SHORT ? 'kuhai-demo-kratko.mp4' : 'kuhai-demo.mp4')
+const OUT = args[1] || path.join(HERE, 'out', `kuhai-demo${SHORT ? '-kratko' : ''}${SLIDE ? '-slajd' : ''}.mp4`)
 const FPS = 30
 const WAIT_MAX = SHORT ? 1.1 : 2.4   // koliko čekanje na AI najviše traje u videu (s)
 const PACE = SHORT ? 1.75 : 1.2      // ostatak snimke ubrzan da demo bude zbijen
@@ -83,7 +85,7 @@ const DATA = {
   dur: DUR,
   logo: pathToFileURL(path.join(HERE, '..', 'src', 'assets', 'logo-ai.png')).href,
 }
-const html = readFileSync(path.join(HERE, 'compose.html'), 'utf8').replace('<script src="https://cdnjs', `<script>window.DATA = ${JSON.stringify(DATA)}</script>\n<script src="https://cdnjs`)
+const html = readFileSync(path.join(HERE, 'compose.html'), 'utf8').replace('<body>', SLIDE ? '<body class="slajd">' : '<body>').replace('<script src="https://cdnjs', `<script>window.DATA = ${JSON.stringify(DATA)}</script>\n<script src="https://cdnjs`)
 const page = path.join(REC, 'compose.built.html')
 writeFileSync(page, html)
 console.log(`trajanje ${DUR.toFixed(1)} s, poglavlja ${chapters.length}, čekanja ${DATA.waits.map((w) => w.speed.toFixed(0) + '×').join(' ')}`)
