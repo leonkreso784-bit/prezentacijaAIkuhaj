@@ -121,7 +121,6 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; cursor: de
 #qr { position: relative; width: calc(var(--u) * 46); height: calc(var(--u) * 46); }
 #qr svg { width: 100%; height: 100%; display: block; }
 #qr img { position: absolute; left: 50%; top: 50%; width: 21%; height: 21%; transform: translate(-50%, -50%); border-radius: 22%; outline: calc(var(--u) * .9) solid #fff; }
-.url { font-family: var(--display); font-weight: 600; font-size: calc(var(--u) * 2); color: var(--muted); margin-top: calc(var(--u) * 2.4); letter-spacing: -0.01em; }
 
 /* 9 · crtić */
 .video-wrap { position: absolute; inset: calc(var(--u) * 4); border-radius: calc(var(--u) * 3); overflow: hidden; background: var(--ink);

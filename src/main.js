@@ -34,7 +34,6 @@ async function boot() {
   document.getElementById('qr').innerHTML = await QRCode.toString(APP_URL, {
     type: 'svg', margin: 0, errorCorrectionLevel: 'H', color: { dark: '#2B1D16', light: '#FFFFFF' },
   }) + `<img src="${logoUrl}" alt="" />`
-  document.getElementById('qrUrl').textContent = APP_URL.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
   const W = createWorld(document.getElementById('gl'), { images })
   window.__world = W
