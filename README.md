@@ -40,7 +40,7 @@ Videi uzimaju 77 s (crtić 37 s + demo 40 s), za govor ostaje oko 100 s.
 |---|---|---|---|
 | 1 | KuhAI | 8 | Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru. |
 | 2 | 20 min scrollaš… | 12 | Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura. |
-| 3 | 71 kg | 12 | A ono što već imaš doma završi u smeću. U Hrvatskoj 71 kg hrane po osobi godišnje, tri četvrtine u kućanstvima. |
+| 3 | „Što ćemo danas jesti?“ | 12 | I svaki dan isto pitanje: što ćemo danas jesti? Otvoriš frižider, pun je… a ti opet: nemam ništa za jesti. 365 puta godišnje. |
 | 4 | STOP. KUHAJ → KUHAI | 6 | Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI. |
 | 5 | Kako radi | 15 | Tri koraka: slikaš frižider, dobiješ cijeli tjedan, košarica je gotova. Uživo ćemo pokazati na kraju. |
 | 6 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
@@ -53,9 +53,6 @@ Tipka dalje preskače crtić i demo.
 
 ## Izvori i napomene
 
-- 71 kg / 76 %: istraživanje Ministarstva gospodarstva RH o otpadu od hrane (2021.), metodologija EU
-  ([TheMayor.eu](https://themayor.eu/en/a/view/40-of-the-food-croatian-households-discard-is-edible-9708),
-  [Total Croatia News](https://total-croatia-news.com/news/croatian-food-waste-2/)).
 - Brojke tjedna (58,40 €, 251,60 €, 11,20 €) su primjer iz aplikacije.
 - Fotke jela i ikone su iz aplikacije KuhAI.
 

@@ -347,6 +347,14 @@ export function createWorld(canvas, { images, logo }) {
       o.euler.set(it.rnd[0] * TAU + t * (0.3 + it.rnd[1] * 0.4), it.rnd[2] * TAU + t * 0.5, 0)
       o.scale = 1.05; o.gray = 0
     },
+    cloud(it, t, o) {
+      // "pun frižider": namirnice lebde u oblaku desno (na mobitelu dolje)
+      const [a, b, c, d] = it.rnd
+      if (portrait) o.pos.set((a - 0.5) * 4.8, 0.5 + b * 4.0 + Math.sin(t * 0.8 + it.i) * 0.12, (c - 0.5) * 2.2)
+      else o.pos.set(1.0 + a * 3.4, 0.25 + b * 2.6 + Math.sin(t * 0.8 + it.i) * 0.12, -0.8 + c * 1.8)
+      o.euler.set(d * TAU + t * (0.25 + c * 0.3), a * TAU + t * (0.3 + b * 0.3), 0)
+      o.scale = portrait ? 1.9 : 1.3; o.gray = 0
+    },
     fallen(it, t, o) {
       const a = it.rnd[0] * TAU, r = Math.sqrt(it.rnd[1]) * (portrait ? 1.25 : 1.6)
       o.pos.set((portrait ? 0 : 2.4) + Math.cos(a) * r * 1.3, 0.13, 0.4 + Math.sin(a) * r * 0.75)

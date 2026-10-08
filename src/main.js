@@ -96,12 +96,13 @@ const SCENES = {
     W.setCards('hidden', { dur: 0.8 })
     W.setReels('feed', { dur: 1.6, stagger: 0.08, ease: 'power3.out' })
   },
-  waste() {
-    PT() ? camTo([0, 4.6, 8.6], [0, 4.0, 0]) : camTo([0.4, 1.35, 7.4], [0.9, 0.7, 0])
+  question() {
+    // pun frižider: šarene namirnice lebde, a ideje nema
+    PT() ? camTo(...PCAM) : camTo([0, 1.5, 8], [0, 1.1, 0])
     pot({ x: 4.5, y: 0, z: -4, s: 0.0001, steam: 0, boil: 0 }, 1)
     W.setReels('hidden', { dur: 0.9, stagger: 0.03, ease: 'power2.in' })
     W.setCards('hidden', { dur: 0.6 })
-    W.setIngredients('fallen', { dur: 1.5, stagger: 0.05, delay: 0.3, ease: 'bounce.out' })
+    W.setIngredients('cloud', { dur: 1.6, stagger: 0.05, delay: 0.25, hop: 0.6, ease: 'back.out(1.4)' })
   },
   kuhaj(root) {
     PT() ? camTo(...PCAM, 1.6) : camTo([0, 2.3, 8.4], [0, 1.75, 0], 1.6)
