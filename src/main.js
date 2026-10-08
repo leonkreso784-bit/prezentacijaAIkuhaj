@@ -153,6 +153,23 @@ const SCENES = {
     W.setCards('hidden', { dur: 0.6 })
     W.setReels('hidden', { dur: 0.6 })
   },
+  video(root) {
+    // lonac se zakuha, a crtić izroni ispred njega
+    camTo([0, 1.5, 8], [0, 1, 0], 1.4)
+    pot({ x: 0, y: 0, z: 0, s: 1.3, ry: 0, rx: 0, lift: 0.5, tilt: 0.8, away: 0, boil: 1, steam: 1.6 }, 1.2)
+    W.setIngredients('ring', { dur: 1.4, stagger: 0.02, hop: 0.6 })
+    W.setCards('hidden', { dur: 0.6 })
+    W.setReels('hidden', { dur: 0.6 })
+    const v = root.querySelector('video')
+    v.currentTime = 0
+    v.muted = false
+    v.onended = () => { if (slides[cur] === root) go(cur + 1) }
+    document.body.classList.add('playing')
+    const tl = gsap.timeline()
+    tl.fromTo(root.querySelector('.video-wrap'), { scale: 0.2, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.35)
+      .call(() => v.play().catch(() => { v.muted = true; v.play() }), null, 0.6)
+    return tl
+  },
   go(root) {
     const msg = root.querySelector('.go-msg'), flash = document.getElementById('flash')
     gsap.set(msg, { opacity: 0 })
@@ -176,6 +193,8 @@ function go(n) {
   const prev = slides[cur], next = slides[n]
   sceneTl?.kill(); sceneTl = null
   if (prev) {
+    prev.querySelectorAll('video').forEach((v) => { v.pause(); v.onended = null })
+    document.body.classList.remove('playing')
     const els = prev.querySelectorAll('.a')
     gsap.killTweensOf(els)
     gsap.to(els, { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.35, stagger: 0.03, ease: 'power2.in', onComplete: () => prev.classList.remove('on') })
