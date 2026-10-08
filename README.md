@@ -2,7 +2,7 @@
 
 Prezentacija u three.js, u stilu aplikacije KuhAI (iste boje, fontovi, ikone i fotke jela).
 Lonac iz loga je 3D. Slajdovi se mijenjaju pokretom kamere i namirnica.
-Na kraju idu QR kod koji vodi na aplikaciju, pa crtić (promo video, 45 s), a zatim zadnji slajd uroni u lonac i odmah otvori aplikaciju.
+Na kraju idu QR kod koji vodi na aplikaciju, pa crtić (promo video, 37 s), a zatim zadnji slajd uroni u lonac i odmah otvori aplikaciju.
 
 ## Pokretanje
 
@@ -34,7 +34,7 @@ Daljinski za prezentacije (clicker) radi jer šalje PageDown/PageUp.
 
 ## Slajdovi i tekst za govor
 
-Crtić traje 45 s, pa za govor ostaje oko 2:15.
+Crtić traje 37 s, pa za govor ostaje oko 2:20.
 
 | # | slajd | ~s | što reći |
 |---|---|---|---|
@@ -47,7 +47,7 @@ Crtić traje 45 s, pa za govor ostaje oko 2:15.
 | 7 | Brojke | 20 | Primjer tjedna iz aplikacije: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
 | 8 | Ispod poklopca | 20 | Gemini prepoznaje namirnice s fotke, planer slaže tjedan u četiri paralelna AI poziva, košarica se puni iz pravog Konzumova kataloga. |
 | 9 | QR | 20 | Ne vjerujte nam na riječ. Skenirajte i probajte odmah. |
-| 10 | crtić | 45 | Pušta se sam, sa zvukom (`public/crtic.mp4`). Kad završi, sam ide na zadnji slajd. Dalje ga preskače. |
+| 10 | crtić | 37 | Pušta se sam, sa zvukom (`public/crtic.mp4`). Kad završi, sam ide na zadnji slajd. Dalje ga preskače. |
 | 11 | → aplikacija | | Kamera uroni u lonac i otvori se aplikacija. |
 
 ## Izvori i napomene
