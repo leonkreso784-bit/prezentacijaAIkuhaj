@@ -191,6 +191,7 @@ body.portrait .tag.bl { left: calc(var(--u) * 6); top: auto; bottom: calc(var(--
 body.portrait .tag.br { right: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 12); }
 body.portrait .qr-col { width: auto; }
 body.portrait #qr { width: calc(var(--u) * 62); height: calc(var(--u) * 62); }
+body.portrait .s-demo .video-wrap { height: auto; width: calc(100vw - var(--u) * 6); aspect-ratio: 16 / 9; border-radius: calc(var(--u) * 3); }
 body.portrait .video-wrap { inset: auto; left: 50%; top: 50%; translate: -50% -50%; height: min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)); aspect-ratio: 9 / 16; border-radius: calc(var(--u) * 5); }
 body.portrait .go-msg p { font-size: calc(var(--u) * 8); }
 body.portrait #hint { font-size: calc(var(--u) * 2.8); white-space: nowrap; }

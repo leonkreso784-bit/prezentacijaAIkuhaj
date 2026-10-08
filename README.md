@@ -32,23 +32,26 @@ Adresa aplikacije (QR kod i zadnji slajd) je u `src/config.js`.
 Daljinski za prezentacije (clicker) radi jer šalje PageDown/PageUp.
 `?noredirect` u adresi isključuje odlazak na aplikaciju (za probu).
 
-## Slajdovi i tekst za govor
+## Slajdovi i tekst za govor (3:00)
 
-Crtić traje 37 s, pa za govor ostaje oko 2:20.
+Videi uzimaju 77 s (demo 40 s + crtić 37 s), za govor ostaje oko 100 s.
 
 | # | slajd | ~s | što reći |
 |---|---|---|---|
-| 1 | KuhAI | 10 | Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru. |
-| 2 | 20 min scrollaš… | 15 | Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura. |
-| 3 | 71 kg | 15 | A namirnice koje već imaš doma završe u smeću. U Hrvatskoj se baci 71 kg hrane po osobi godišnje, tri četvrtine toga u kućanstvima. |
-| 4 | STOP. KUHAJ → KUHAI | 10 | Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI. |
-| 5 | Kako radi | 25 | Odgovoriš na par brzih pitanja i slikaš frižider. AI prepozna namirnice i što uskoro ističe. Dobiješ cijeli tjedan: jelovnik, meal prep u dva bloka i košaricu u Konzumu. |
-| 6 | Tvoj tjedan | 25 | Svaki obrok ima razlog: špinat ističe sutra, pa ide prvi. Ne jede ti se nešto? Protreseš mobitel i dobiješ novo jelo od istih namirnica. |
-| 7 | Brojke | 20 | Primjer tjedna iz aplikacije: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
-| 8 | Ispod poklopca | 20 | Gemini prepoznaje namirnice s fotke, planer slaže tjedan u četiri paralelna AI poziva, košarica se puni iz pravog Konzumova kataloga. |
-| 9 | QR | 20 | Ne vjerujte nam na riječ. Skenirajte i probajte odmah. |
-| 10 | crtić | 37 | Pušta se sam, sa zvukom (`public/crtic.mp4`). Kad završi, sam ide na zadnji slajd. Dalje ga preskače. |
+| 1 | KuhAI | 8 | Bok! Mi smo KuhAI. Aplikacija koja umjesto tebe smisli što ćeš jesti cijeli tjedan, od onoga što već imaš u frižideru. |
+| 2 | 20 min scrollaš… | 12 | Je li ovo tvoja večera? Tražiš recept, 20 minuta kasnije još scrollaš… i na kraju naručiš dostavu za dvadesetak eura. |
+| 3 | 71 kg | 12 | A ono što već imaš doma završi u smeću. U Hrvatskoj 71 kg hrane po osobi godišnje, tri četvrtine u kućanstvima. |
+| 4 | STOP. KUHAJ → KUHAI | 6 | Zato: stop. Kuhaj. A AI ti pomaže, zato KuhAI. |
+| 5 | Kako radi | 12 | Tri koraka: slikaš frižider, dobiješ tjedan, košarica je gotova. Evo uživo. |
+| 6 | demo (40 s) | 40 | Pričaj preko snimke (bez zvuka): Par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan s meal prepom. Ne paše mi jelo? Protresem. I košarica u Konzumu, naručeno. |
+| 7 | Brojke | 15 | Primjer tjedna: cijela košarica 58 €, to je 250 € manje nego dostava. I 11 € hrane spašeno od bacanja. |
+| 8 | Ispod poklopca | 15 | Gemini prepoznaje namirnice s fotke, planer slaže tjedan u četiri paralelna AI poziva, košarica se puni iz pravog Konzumova kataloga. |
+| 9 | QR | 10 | Ne vjerujte nam na riječ. Skenirajte i probajte odmah. |
+| 10 | crtić (37 s) | 37 | Pušta se sam, sa zvukom. Kad završi, sam ide na zadnji slajd. |
 | 11 | → aplikacija | | Kamera uroni u lonac i otvori se aplikacija. |
+
+Demo i crtić idu sami i na kraju sami prelaze na sljedeći slajd; tipka dalje ih preskače.
+Slajd „Tvoj tjedan“ (kartice jela u 3D) izbačen je jer demo pokazuje isto uživo; vraća se iz git povijesti.
 
 ## Izvori i napomene
 
@@ -70,7 +73,8 @@ Crtić traje 37 s, pa za govor ostaje oko 2:20.
 
 ```
 node demo/record.mjs     # prođe kroz živu aplikaciju na mobitelu (390×844) i snimi ekran → demo/out/rec
-node demo/compose.mjs    # telefon u okviru + naslovi poglavlja, čekanje na AI ubrzano → demo/out/kuhai-demo.mp4
+node demo/compose.mjs    # telefon u okviru + naslovi poglavlja, čekanje na AI ubrzano → demo/out/kuhai-demo.mp4 (82 s)
+node demo/compose.mjs --kratko   # 40 s za pitch (bez AI pitanja i recepta) → demo/out/kuhai-demo-kratko.mp4 = public/demo.mp4
 ```
 
 Snimanje traje oko 4 minute jer pravi AI pozivi traju (plan 60–90 s). U videu je to ubrzano uz oznaku „ubrzano ×N“.

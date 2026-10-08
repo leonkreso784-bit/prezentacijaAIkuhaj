@@ -163,8 +163,8 @@ const SCENES = {
     W.setCards('hidden', { dur: 0.6 })
     W.setReels('hidden', { dur: 0.6 })
     const v = root.querySelector('video')
-    // uspravni mobitel: okomita 9:16 verzija crtića preko cijelog ekrana
-    const src = PT() ? v.dataset.mob : './crtic.mp4'
+    // uspravni mobitel: okomita 9:16 verzija (ako postoji) preko cijelog ekrana
+    const src = PT() ? v.dataset.mob : v.dataset.desk
     if (v.getAttribute('src') !== src) { v.src = src; v.load() }
     v.currentTime = 0
     v.muted = false

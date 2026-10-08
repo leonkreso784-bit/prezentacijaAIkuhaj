@@ -7,18 +7,28 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
-const REC = process.argv[2] || path.join(HERE, 'out', 'rec')
-const OUT = process.argv[3] || path.join(HERE, 'out', 'kuhai-demo.mp4')
+// --kratko: verzija od ~40 s za pitch (bez AI pitanja i recepta, brže)
+const SHORT = process.argv.includes('--kratko')
+const args = process.argv.slice(2).filter((a) => a !== '--kratko')
+const REC = args[0] || path.join(HERE, 'out', 'rec')
+const OUT = args[1] || path.join(HERE, 'out', SHORT ? 'kuhai-demo-kratko.mp4' : 'kuhai-demo.mp4')
 const FPS = 30
-const WAIT_MAX = 2.4   // koliko čekanje na AI najviše traje u videu (s)
-const PACE = 1.2       // ostatak snimke malo ubrzan da demo bude zbijen
+const WAIT_MAX = SHORT ? 1.1 : 2.4   // koliko čekanje na AI najviše traje u videu (s)
+const PACE = SHORT ? 1.75 : 1.2      // ostatak snimke ubrzan da demo bude zbijen
 
 const ev = JSON.parse(readFileSync(path.join(REC, 'events.json'), 'utf8'))
 const rel = (ts) => ts - ev.t0                        // CDP vrijeme → sekunde od početka snimanja
 const frames = ev.frames.map((f) => ({ t: rel(f.t), file: f.file }))
 const start = rel(ev.startWall) - 0.1
 const end = ev.events.find((e) => e.type === 'end').t
+const at = (type, label) => ev.events.find((e) => e.type === type && e.label === label).t
 
+// izrezani dijelovi snimke (stvarno vrijeme)
+const CUTS = SHORT ? [
+  [start, start + 1.3],                                       // aplikacija se još učitava
+  [at('wait', 'pitanja'), at('chapter', 'Slikaj frižider')],  // AI pitanja
+  [at('chapter', 'Recept'), at('chapter', 'Košarica') - 0.2], // recept i zamjena
+] : []
 // čekanja: [wait, ready] parovi → ubrzaj na WAIT_MAX
 const waits = []
 ev.events.forEach((e, i) => {
@@ -26,17 +36,29 @@ ev.events.forEach((e, i) => {
   const r = ev.events.slice(i).find((x) => x.type === 'ready' && x.label === e.label)
   if (r && r.t - e.t > WAIT_MAX) waits.push({ a: e.t, b: r.t, label: e.label })
 })
+// zadržani dijelovi = cijela snimka bez izreza
+let keep = [[start, end]]
+for (const [c0, c1] of CUTS) keep = keep.flatMap(([a, b]) => (c1 <= a || c0 >= b) ? [[a, b]] : [[a, c0], [c1, b]].filter(([x, y]) => y - x > 0.05))
 // mapa: stvarno vrijeme → vrijeme u videu
 const segs = []
-let cur = start, out = 0
-for (const w of waits) {
-  segs.push({ r0: cur, r1: w.a, o0: out, speed: PACE }); out += (w.a - cur) / PACE
-  segs.push({ r0: w.a, r1: w.b, o0: out, speed: (w.b - w.a) / WAIT_MAX, wait: w }); out += WAIT_MAX
-  cur = w.b
+let out = 0
+for (const [ka, kb] of keep) {
+  let cur = ka
+  for (const w of waits.filter((w) => w.a >= ka && w.b <= kb)) {
+    segs.push({ r0: cur, r1: w.a, o0: out, speed: PACE }); out += (w.a - cur) / PACE
+    segs.push({ r0: w.a, r1: w.b, o0: out, speed: (w.b - w.a) / WAIT_MAX, wait: w }); out += WAIT_MAX
+    cur = w.b
+  }
+  segs.push({ r0: cur, r1: kb, o0: out, speed: PACE }); out += (kb - cur) / PACE
 }
-segs.push({ r0: cur, r1: end, o0: out, speed: PACE }); out += (end - cur) / PACE
 const DUR = out
-const toOut = (r) => { const s = segs.find((s) => r >= s.r0 && r <= s.r1) || segs.at(-1); return s.o0 + (r - s.r0) / s.speed }
+const inCut = (r) => CUTS.some(([a, b]) => r > a && r < b)
+// ekran se snima samo kad se promijeni: zadnji kadar iz izreza vrijedi i odmah nakon njega
+const cutTails = CUTS.map(([, b]) => { const f = frames.findLast((f) => f.t < b); return f && { t: b, file: f.file } }).filter(Boolean)
+const toOut = (r) => {
+  const s = segs.find((s) => r >= s.r0 && r <= s.r1) || segs.findLast((s) => s.r1 <= r) || segs[0]
+  return s.o0 + (Math.min(Math.max(r, s.r0), s.r1) - s.r0) / s.speed
+}
 
 const LABELS = {
   pitanja: 'AI smišlja pitanja…', vision: 'AI gleda frižider…', kandidati: 'AI bira jela za tebe…',
@@ -53,9 +75,9 @@ const SUBS = {
   'Košarica': 'Samo ono što fali, po cijenama iz Konzuma.',
   'Narudžba poslana': 'Dostava ili preuzimanje. Gotovo.',
 }
-const chapters = ev.events.filter((e) => e.type === 'chapter').map((e) => ({ t: Math.max(0, toOut(e.t)), title: e.label, sub: SUBS[e.label] || '' }))
+const chapters = ev.events.filter((e) => e.type === 'chapter' && !inCut(e.t) && !(SHORT && e.label === 'Recept')).map((e) => ({ t: Math.max(0, toOut(e.t)), title: e.label, sub: SUBS[e.label] || '' }))
 const DATA = {
-  frames: frames.filter((f) => f.t >= start - 2 && f.t <= end + 0.5).map((f) => ({ t: toOut(Math.max(f.t, start)), file: pathToFileURL(path.join(REC, f.file)).href })),
+  frames: frames.filter((f) => f.t >= start - 2 && f.t <= end + 0.5 && !inCut(f.t)).concat(cutTails).sort((a, b) => a.t - b.t).map((f) => ({ t: toOut(Math.max(f.t, start)), file: pathToFileURL(path.join(REC, f.file)).href })),
   chapters,
   waits: segs.filter((s) => s.wait).map((s) => ({ a: s.o0, b: s.o0 + WAIT_MAX, speed: s.speed, label: LABELS[s.wait.label] || 'AI radi…' })),
   dur: DUR,
@@ -71,8 +93,8 @@ const p = await b.newPage({ viewport: { width: 1920, height: 1080 } })
 p.on('pageerror', (e) => console.error('PAGE ERROR', e.message))
 await p.goto(pathToFileURL(page).href)
 await p.waitForFunction(() => window.__ready === true, null, { timeout: 60000 })
-if (process.argv[4] === 'stills') {
-  for (const t of process.argv.slice(5).map(Number)) {
+if (args[2] === 'stills') {
+  for (const t of args.slice(3).map(Number)) {
     await p.evaluate((t) => window.__seek(t), t)
     await p.screenshot({ path: path.join(REC, `still-${t}.png`) })
   }
