@@ -54,7 +54,9 @@ console.log('PC 1920×1080, prolaz naprijed')
   ok(`prošao ${n - 1} slajdova`)
   // videi sami prelaze dalje
   await p.evaluate(() => window.__go(5)); await p.waitForTimeout(1500)
-  await p.evaluate(() => { document.getElementById('demo').currentTime = 39.2 }); await p.waitForTimeout(2500)
+  await p.evaluate(() => { document.getElementById('demo').currentTime = 39.2 })
+  await p.waitForFunction(() => document.querySelector('.slide.on:last-of-type, .slide.on')?.dataset.scene !== 'video' || [...document.querySelectorAll('.slide.on')].at(-1).dataset.scene === 'nums', null, { timeout: 15000 }).catch(() => {})
+  await p.waitForTimeout(1500)
   ;(await state(p)).scene === 'nums' ? ok('demo na kraju sam prelazi na brojke') : fail('demo ne prelazi sam dalje')
   // natrag na demo: svira ispočetka, crtić stoji
   await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(2500)
