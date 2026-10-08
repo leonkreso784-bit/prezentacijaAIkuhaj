@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8" />
+<title>KuhAI demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root { --brand: #D0161B; --bg: #FFFBF6; --cream: #FFF4E6; --ink: #2B1D16; --muted: #8A6F60; --line: #F0E4D6; --fresh: #2E7D32; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); font-family: Nunito, sans-serif; color: var(--ink); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(2px); }
+  #b1 { width: 900px; height: 900px; right: -120px; top: 90px; background: var(--cream); }
+  #b2 { width: 260px; height: 260px; right: 690px; top: 120px; background: #FFE3D3; }
+  #b3 { width: 180px; height: 180px; right: 120px; bottom: 60px; background: #E4F1DA; }
+  /* telefon */
+  #phone { position: absolute; left: 1150px; top: 50%; width: 468px; height: 971px; translate: 0 -50%; border-radius: 70px; background: var(--ink);
+    padding: 18px; box-shadow: 0 50px 90px -40px rgb(43 29 22 / .55), 0 0 0 2px #4a362c inset; }
+  #screen { position: relative; width: 432px; height: 935px; border-radius: 54px; overflow: hidden; background: #fff; }
+  #screen img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  #island { position: absolute; left: 50%; top: 30px; width: 120px; height: 34px; translate: -50% 0; border-radius: 20px; background: #000; z-index: 2; }
+  /* lijevo: naslov poglavlja */
+  #brand { position: absolute; left: 140px; top: 96px; display: flex; align-items: center; gap: 18px; }
+  #brand img { width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 10px 22px -10px rgb(208 22 27 / .6); }
+  #brand b { font-family: Unbounded; font-weight: 700; font-size: 38px; letter-spacing: -0.03em; }
+  #brand b em { font-style: normal; color: var(--brand); }
+  #brand span { font-weight: 800; font-size: 22px; color: var(--muted); margin-left: 6px; }
+  #cap { position: absolute; left: 140px; top: 50%; translate: 0 -50%; width: 860px; }
+  #num { font-family: Unbounded; font-weight: 700; font-size: 30px; color: var(--brand); letter-spacing: -0.02em; }
+  #title { font-weight: 900; font-size: 92px; line-height: 1.02; letter-spacing: -0.03em; margin-top: 14px; }
+  #sub { font-weight: 700; font-size: 36px; line-height: 1.3; color: var(--muted); margin-top: 22px; max-width: 760px; }
+  .w { display: inline-block; }
+  /* čekanje na AI */
+  #wait { position: absolute; left: 140px; bottom: 150px; display: flex; align-items: center; gap: 16px; background: #fff; border: 2px solid var(--line);
+    border-radius: 999px; padding: 16px 30px 16px 20px; font-weight: 800; font-size: 28px; box-shadow: 0 14px 30px -18px rgb(43 29 22 / .35); opacity: 0; }
+  #wait i { width: 30px; height: 30px; border-radius: 50%; border: 4px solid #F6B8A8; border-top-color: var(--brand); }
+  #wait small { font-family: Unbounded; font-weight: 600; font-size: 20px; color: var(--muted); }
+  /* napredak */
+  #dots { position: absolute; left: 140px; bottom: 90px; display: flex; gap: 10px; }
+  #dots i { width: 12px; height: 12px; border-radius: 99px; background: var(--line); }
+  #dots i.on { background: var(--brand); }
+  #dots i.cur { width: 40px; }
+</style>
+</head>
+<body>
+  <div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+  <div id="brand"><img id="logo" alt="" /><b>Kuh<em>AI</em></b><span>demo aplikacije</span></div>
+  <div id="cap"><div id="num"></div><div id="title"></div><div id="sub"></div></div>
+  <div id="wait"><i></i><span id="waitTxt">AI radi…</span><small id="waitX"></small></div>
+  <div id="dots"></div>
+  <div id="phone"><div id="screen"><div id="island"></div><img id="frame" alt="" /></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+// podaci (window.DATA) ubacuje compose.mjs: { frames:[{t,file}], chapters:[{t,title,sub}], waits:[{a,b,speed,label}], dur, logo }
+const D = window.DATA
+const $ = (s) => document.querySelector(s)
+$('#logo').src = D.logo
+D.chapters.forEach(() => $('#dots').appendChild(document.createElement('i')))
+const split = (el, text) => { el.innerHTML = text.split(' ').map((w) => `<span class="w">${w}</span>`).join(' '); return el.querySelectorAll('.w') }
+const tl = gsap.timeline({ paused: true })
+D.chapters.forEach((c, i) => {
+  const t = c.t
+  if (i) tl.to('#cap', { opacity: 0, x: -30, duration: 0.25, ease: 'power2.in' }, t - 0.25)
+  tl.call(() => {
+    $('#num').textContent = String(i + 1).padStart(2, '0')
+    split($('#title'), c.title); $('#sub').textContent = c.sub
+    ;[...$('#dots').children].forEach((d, j) => { d.className = j < i ? 'on' : j === i ? 'on cur' : '' })
+  }, null, t)
+  tl.set('#cap', { opacity: 1, x: 0 }, t)
+  tl.fromTo(() => '#title .w', { y: 40, scale: 0.6, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'back.out(2.4)', immediateRender: false }, t)
+  tl.fromTo('#sub', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, t + 0.25)
+  tl.fromTo('#num', { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t)
+})
+D.waits.forEach((w) => {
+  tl.call(() => { $('#waitTxt').textContent = w.label; $('#waitX').textContent = `ubrzano ×${Math.round(w.speed)}` }, null, w.a)
+  tl.fromTo('#wait', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25, immediateRender: false }, w.a)
+  tl.to('#wait', { opacity: 0, y: 10, duration: 0.25 }, w.b)
+})
+tl.to('#wait i', { rotation: 360 * D.dur, duration: D.dur, ease: 'none' }, 0)
+tl.to({}, { duration: 0.01 }, D.dur)
+// lagani zoom telefona na početku
+tl.fromTo('#phone', { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.4)' }, 0)
+tl.fromTo('#brand', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5 }, 0.1)
+const img = $('#frame')
+let last = ''
+window.__seek = async (t) => {
+  tl.seek(t, false)
+  let k = 0, lo = 0, hi = D.frames.length - 1
+  while (lo <= hi) { const m = (lo + hi) >> 1; if (D.frames[m].t <= t) { k = m; lo = m + 1 } else hi = m - 1 }
+  const f = D.frames[k].file
+  if (f !== last) { img.src = f; last = f; await img.decode().catch(() => {}) }
+}
+window.__duration = D.dur
+document.fonts.ready.then(() => { window.__ready = true })
+</script>
+</body>
+</html>

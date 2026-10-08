@@ -65,3 +65,13 @@ Crtić traje 37 s, pa za govor ostaje oko 2:20.
 - `src/main.js`: redoslijed slajdova, prijelazi, kontrole
 - `src/style.css`: tokeni iz aplikacije
 - `tools/shots.mjs`: snimke svih slajdova za provjeru (`node tools/shots.mjs shots 1920 1080`, nakon builda)
+
+## Demo aplikacije (snimka ekrana)
+
+```
+node demo/record.mjs     # prođe kroz živu aplikaciju na mobitelu (390×844) i snimi ekran → demo/out/rec
+node demo/compose.mjs    # telefon u okviru + naslovi poglavlja, čekanje na AI ubrzano → demo/out/kuhai-demo.mp4
+```
+
+Snimanje traje oko 4 minute jer pravi AI pozivi traju (plan 60–90 s). U videu je to ubrzano uz oznaku „ubrzano ×N“.
+Fotka frižidera: `demo/frizider.jpg` ([Pexels 4443433](https://www.pexels.com/photo/4443433/), Pexels License).
