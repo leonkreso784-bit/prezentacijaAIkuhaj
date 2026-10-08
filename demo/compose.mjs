@@ -81,7 +81,7 @@ const DATA = {
   chapters,
   waits: segs.filter((s) => s.wait).map((s) => ({ a: s.o0, b: s.o0 + WAIT_MAX, speed: s.speed, label: LABELS[s.wait.label] || 'AI radi…' })),
   dur: DUR,
-  logo: pathToFileURL(path.join(HERE, '..', 'src', 'assets', 'logo.png')).href,
+  logo: pathToFileURL(path.join(HERE, '..', 'src', 'assets', 'logo-ai.png')).href,
 }
 const html = readFileSync(path.join(HERE, 'compose.html'), 'utf8').replace('<script src="https://cdnjs', `<script>window.DATA = ${JSON.stringify(DATA)}</script>\n<script src="https://cdnjs`)
 const page = path.join(REC, 'compose.built.html')
