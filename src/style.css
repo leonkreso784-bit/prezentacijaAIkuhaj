@@ -151,9 +151,10 @@ body.playing #hud { opacity: 0; }
 .s-qrdemo .qr-col { position: absolute; right: calc(var(--u) * 3); top: 50%; translate: 0 -50%; width: calc(var(--u) * 48); text-align: center; }
 .s-qrdemo .h { font-size: calc(var(--u) * 5); }
 .s-qrdemo #qr { width: calc(var(--u) * 38); height: calc(var(--u) * 38); }
-body.portrait .s-qrdemo .video-wrap { inset: calc(var(--u) * 12) 0 auto 0; margin: 0 auto; background: var(--ink); -webkit-mask-image: none; mask-image: none;
+/* mobitel: demo-mob.mp4 je okomit 9:16 pa zauzme cijeli ekran; QR na mobitelu nema smisla (već si na mobitelu) */
+body.portrait .s-qrdemo .video-wrap { inset: 0; margin: auto; background: var(--bg); -webkit-mask-image: none; mask-image: none;
   box-shadow: 0 calc(var(--u) * 3) calc(var(--u) * 8) calc(var(--u) * -3) rgb(43 29 22 / .45); }
-body.portrait .s-qrdemo .qr-col { left: 0; right: 0; width: auto; top: auto; bottom: calc(var(--u) * 10); translate: none; }
+body.portrait .s-qrdemo .qr-col { display: none; }
 body.portrait .s-qrdemo #qr { width: calc(var(--u) * 52); height: calc(var(--u) * 52); }
 body.portrait .s-qrdemo::before { display: none; }
 
@@ -174,6 +175,11 @@ body.portrait .s-qrdemo::before { display: none; }
 #notes { z-index: 4; position: fixed; left: 50%; bottom: calc(var(--u) * 6); transform: translateX(-50%); width: min(90vw, 1100px); background: rgb(43 29 22 / .92); color: #fff; font-size: 20px; line-height: 1.45; font-weight: 600; padding: 16px 22px; border-radius: 16px; }
 #hint { z-index: 4; position: fixed; left: 50%; top: calc(var(--u) * 2.4); transform: translateX(-50%); font-size: calc(var(--u) * 1.7); font-weight: 700; color: var(--muted); background: rgb(255 255 255 / .8); border: 1px solid var(--line); padding: calc(var(--u) * .6) calc(var(--u) * 1.8); border-radius: 999px; transition: opacity .6s; }
 #hint.gone { opacity: 0; }
+/* kad preglednik ne da pustiti zvuk bez dodira (Safari/iPhone), video ide nijem i nudi se ovaj gumb */
+#unmute { z-index: 5; position: fixed; left: 50%; bottom: calc(var(--u) * 5); transform: translateX(-50%); pointer-events: auto; cursor: pointer;
+  font: 800 calc(var(--u) * 2.6) var(--sans); color: #fff; background: var(--brand); border: 0; border-radius: 999px; padding: calc(var(--u) * 1.4) calc(var(--u) * 3.2);
+  box-shadow: 0 calc(var(--u) * 1.2) calc(var(--u) * 3) calc(var(--u) * -1) rgb(208 22 27 / .6); }
+body.portrait #unmute { font-size: calc(var(--u) * 3.6); bottom: calc(var(--u) * 8); }
 [hidden] { display: none !important; }
 
 /* ---------- mobitel uspravno: tekst gore, 3D scena dolje ---------- */
@@ -219,7 +225,6 @@ body.portrait .tag .big { font-size: calc(var(--u) * 6.4); }
 body.portrait .tag small { font-size: calc(var(--u) * 2.8); }
 body.portrait .qr-col { width: auto; }
 body.portrait #qr { width: calc(var(--u) * 62); height: calc(var(--u) * 62); }
-body.portrait .s-demo .video-wrap { width: calc(100vw - var(--u) * 6); height: calc((100vw - var(--u) * 6) * 9 / 16); border-radius: calc(var(--u) * 3); }
 body.portrait .video-wrap { inset: 0; margin: auto; height: min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)); width: calc(min(calc(100dvh - var(--u) * 14), calc((100vw - var(--u) * 6) * 16 / 9)) * 9 / 16); border-radius: calc(var(--u) * 5); }
 body.portrait .go-msg p { font-size: calc(var(--u) * 8); }
 body.portrait #hint { font-size: calc(var(--u) * 2.8); white-space: nowrap; }

@@ -95,13 +95,13 @@
     <!-- 7 · crtić (promo video) -->
     <section class="slide s-video" data-scene="video"
       data-notes="Crtić (37 s) ide sam, sa zvukom. Kad završi, sam prelazi na demo s QR kodom. Tipka dalje ga preskače.">
-      <div class="a video-wrap"><video id="crtic" data-desk="./crtic.mp4" data-mob="./crtic-mob.mp4" preload="auto" playsinline></video></div>
+      <div class="a video-wrap"><video id="crtic" data-desk="./crtic.mp4" data-mob="./crtic-mob.mp4" data-sound preload="auto" playsinline></video></div>
     </section>
 
     <!-- 8 · demo aplikacije + QR: nakon kraja dema ostaje se ovdje, strelica vodi na aplikaciju -->
     <section class="slide s-video s-demo s-qrdemo" data-scene="demoqr"
       data-notes="Demo (40 s) ide sam, bez zvuka, a QR je pored. Pričaj: Skenirajte i probajte odmah. Ovo je prava aplikacija: par brzih pitanja, slikam frižider, AI prepozna ciklu, jagode i krastavac. Swipeom biram što mi se jede i za minutu imam cijeli tjedan. Ne paše mi jelo? Protresem. I košarica u Konzumu, naručeno. Kad demo završi, slajd ostaje; strelica otvara aplikaciju.">
-      <div class="a video-wrap"><video id="demo" data-desk="./demo.mp4" data-mob="./demo-mob.mp4" preload="auto" playsinline></video></div>
+      <div class="a video-wrap"><video id="demo" data-desk="./demo.mp4" data-mob="./demo-mob.mp4" muted preload="auto" playsinline></video></div>
       <div class="qr-col">
         <p class="a kicker">Probaj odmah</p>
         <h2 class="a h">Skeniraj i skuhaj.</h2>
@@ -121,6 +121,7 @@
     <div id="timer" hidden>3:00</div>
   </footer>
   <aside id="notes" hidden></aside>
+  <button id="unmute" type="button" hidden>🔊 Uključi zvuk</button>
   <div id="hint">→ / razmaknica: dalje · F: cijeli zaslon · T: štoperica · N: bilješke</div>
 
   <script type="module" src="/src/main.js"></script>

@@ -112,5 +112,27 @@ for (const [w, h] of [[1280, 800], [1024, 768]]) {
   await p.close()
 }
 await b.close()
+
+// ---------- 4. pravo pravilo za autoplay (bez zastavice), kao na mobitelu posjetitelja ----------
+{
+  const b2 = await chromium.launch({ channel: 'chrome', headless: true })
+  const p = await b2.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 })
+  await p.route(APP + '**', (r) => r.fulfill({ contentType: 'text/html', body: 'APP' }))
+  await p.goto(URL + '?noredirect#7')
+  await p.waitForFunction(() => window.__go, null, { timeout: 30000 })
+  await p.waitForTimeout(1500)
+  await p.tap('body', { position: { x: 200, y: 420 } })
+  await p.waitForTimeout(2500)
+  let v = await p.$eval('#crtic', (v) => ({ paused: v.paused, muted: v.muted, w: v.videoWidth, h: v.videoHeight }))
+  !v.paused && !v.muted ? ok(`mobitel, dodir: crtić svira sa zvukom (${v.w}×${v.h})`) : fail('mobitel: crtić nakon dodira ' + JSON.stringify(v))
+  await p.evaluate(() => { document.getElementById('crtic').currentTime = 36.6 })
+  await p.waitForFunction(() => [...document.querySelectorAll('.slide.on')].at(-1)?.dataset.scene === 'demoqr', null, { timeout: 15000 }).catch(() => {})
+  await p.waitForTimeout(2500)
+  v = await p.$eval('#demo', (v) => ({ paused: v.paused, w: v.videoWidth, h: v.videoHeight, t: v.currentTime }))
+  !v.paused && v.t > 0.5 ? ok('mobitel: demo sam krene nakon crtića') : fail('mobitel: demo ne svira ' + JSON.stringify(v))
+  v.h > v.w ? ok(`mobitel: demo je okomit (${v.w}×${v.h})`) : fail('mobitel: demo nije okomit ' + JSON.stringify(v))
+  await p.screenshot({ path: `${OUT}/mob-demo-pravi.png` })
+  await b2.close()
+}
 console.log(problems.length ? `\n${problems.length} problema` : '\nSVE U REDU')
 process.exitCode = problems.length ? 1 : 0

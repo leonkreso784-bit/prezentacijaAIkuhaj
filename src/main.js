@@ -57,16 +57,21 @@ const PCAM = [[0, 5.6, 9.5], [0, 5.1, 0]]
 // uspravni mobitel: okomita 9:16 verzija videa (ako postoji); bira se odmah da se preuzme prava datoteka
 const pickVideo = (v) => { const src = PT() ? v.dataset.mob : v.dataset.desk; if (v.getAttribute('src') !== src) { v.src = src; v.load() } }
 document.querySelectorAll('video').forEach(pickVideo)
+// play() se zove odmah, još unutar dodira/tipke: Safari i iPhone inače ne puste video sa zvukom.
+// Crtić ima zvuk (data-sound); ako ga preglednik ipak ne pusti, ide nijem uz gumb "Uključi zvuk". Demo je nijem pa uvijek krene sam.
+const unmute = document.getElementById('unmute')
+unmute.addEventListener('click', (e) => { e.stopPropagation(); const v = slides[cur]?.querySelector('video'); if (v) { v.muted = false; v.play().catch(() => {}) } unmute.hidden = true })
+unmute.addEventListener('touchend', (e) => e.stopPropagation())
 function playVideo(root, advance) {
   const v = root.querySelector('video')
   pickVideo(v)
   v.currentTime = 0
-  v.muted = false
+  v.muted = !('sound' in v.dataset)
   v.onended = advance ? () => { if (slides[cur] === root) go(cur + 1) } : null
   document.body.classList.add('playing')
+  v.play().catch(() => { v.muted = true; v.play().catch(() => {}); if ('sound' in v.dataset && slides[cur] === root) unmute.hidden = false })
   const tl = gsap.timeline()
   tl.fromTo(root.querySelector('.video-wrap'), { scale: 0.2, rotation: -4 }, { scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(1.2)' }, 0.35)
-    .call(() => v.play().catch(() => { v.muted = true; v.play() }), null, 0.6)
   return tl
 }
 const fmt = (n, dec) => n.toFixed(dec).replace('.', ',')
@@ -232,6 +237,7 @@ function go(n) {
   sceneTl?.kill(); sceneTl = null
   if (prev) {
     prev.querySelectorAll('video').forEach((v) => { v.pause(); v.onended = null })
+    unmute.hidden = true
     document.body.classList.remove('playing')
     const els = [...prev.querySelectorAll('.a')]
     const hidePrev = () => { if (slides[cur] !== prev) prev.classList.remove('on') }

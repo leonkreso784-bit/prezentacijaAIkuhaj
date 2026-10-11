@@ -11,9 +11,12 @@ const HERE = path.dirname(fileURLToPath(import.meta.url))
 const SHORT = process.argv.includes('--kratko')
 // --slajd: raspored za prezentaciju (veći telefon, desno mjesto za QR)
 const SLIDE = process.argv.includes('--slajd')
-const args = process.argv.slice(2).filter((a) => a !== '--kratko' && a !== '--slajd')
+// --mob: okomiti 9:16 (1080×1920) za mobitel — naslov gore, velik telefon ispod
+const MOB = process.argv.includes('--mob')
+const [VW, VH] = MOB ? [1080, 1920] : [1920, 1080]
+const args = process.argv.slice(2).filter((a) => !['--kratko', '--slajd', '--mob'].includes(a))
 const REC = args[0] || path.join(HERE, 'out', 'rec')
-const OUT = args[1] || path.join(HERE, 'out', `kuhai-demo${SHORT ? '-kratko' : ''}${SLIDE ? '-slajd' : ''}.mp4`)
+const OUT = args[1] || path.join(HERE, 'out', `kuhai-demo${SHORT ? '-kratko' : ''}${SLIDE ? '-slajd' : ''}${MOB ? '-mob' : ''}.mp4`)
 const FPS = 30
 const WAIT_MAX = SHORT ? 1.1 : 2.4   // koliko čekanje na AI najviše traje u videu (s)
 const PACE = SHORT ? 1.75 : 1.2      // ostatak snimke ubrzan da demo bude zbijen
@@ -85,13 +88,13 @@ const DATA = {
   dur: DUR,
   logo: pathToFileURL(path.join(HERE, '..', 'src', 'assets', 'logo-ai.png')).href,
 }
-const html = readFileSync(path.join(HERE, 'compose.html'), 'utf8').replace('<body>', SLIDE ? '<body class="slajd">' : '<body>').replace('<script src="https://cdnjs', `<script>window.DATA = ${JSON.stringify(DATA)}</script>\n<script src="https://cdnjs`)
+const html = readFileSync(path.join(HERE, 'compose.html'), 'utf8').replace('<body>', SLIDE ? '<body class="slajd">' : MOB ? '<body class="mob">' : '<body>').replace('<script src="https://cdnjs', `<script>window.DATA = ${JSON.stringify(DATA)}</script>\n<script src="https://cdnjs`)
 const page = path.join(REC, 'compose.built.html')
 writeFileSync(page, html)
 console.log(`trajanje ${DUR.toFixed(1)} s, poglavlja ${chapters.length}, čekanja ${DATA.waits.map((w) => w.speed.toFixed(0) + '×').join(' ')}`)
 
 const b = await chromium.launch({ args: ['--allow-file-access-from-files'] })
-const p = await b.newPage({ viewport: { width: 1920, height: 1080 } })
+const p = await b.newPage({ viewport: { width: VW, height: VH } })
 p.on('pageerror', (e) => console.error('PAGE ERROR', e.message))
 await p.goto(pathToFileURL(page).href)
 await p.waitForFunction(() => window.__ready === true, null, { timeout: 60000 })
